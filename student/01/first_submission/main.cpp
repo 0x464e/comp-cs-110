@@ -12,7 +12,7 @@ int main()
     std::cin >> age;
 
     std::cout << "Pleased to meet you, " << name << "!" << std::endl;
-    std::cout << "In your next birthday you'll be " << age++ << " years old!";
+    std::cout << "In your next birthday you'll be " << ++age << " years old!";
 
     return EXIT_SUCCESS;
 }
