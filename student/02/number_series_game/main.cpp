@@ -11,6 +11,8 @@ int main()
     {
         if (!(i % 3))
             cout << "zip" << endl;
+        else if (!(i % 7))
+            cout << "boing" << endl;
         else
             cout << i << endl;
     }
