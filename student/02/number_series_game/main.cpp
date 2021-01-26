@@ -10,7 +10,7 @@ int main()
     for(int i=1;i<=count;i++)
     {
         if (!(i % 3))
-            cout << "zip" << endl;
+            cout << "zip" << (!(i%7) ? " boing" : "") << endl;
         else if (!(i % 7))
             cout << "boing" << endl;
         else
