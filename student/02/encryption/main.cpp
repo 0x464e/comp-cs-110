@@ -58,7 +58,7 @@ int main()
         enc_string += enc_key[inp_string[i] % 97];
 
 
-    cout << enc_string << endl;
+    cout << "Encrypted text: " << enc_string << endl;
 
     return EXIT_SUCCESS;
 }
