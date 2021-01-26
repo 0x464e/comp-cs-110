@@ -8,7 +8,12 @@ int main()
     cin >> count;
 
     for(int i=1;i<=count;i++)
-        cout << i << endl;
+    {
+        if (!(i % 3))
+            cout << "zip" << endl;
+        else
+            cout << i << endl;
+    }
 
     return 0;
 }
