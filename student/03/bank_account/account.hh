@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 class Account
 {
 public:
@@ -10,6 +12,11 @@ public:
     Account(const std::string& owner, bool has_credit = false);
 
     // More methods
+    void set_credit_limit(int limit);
+    void save_money(int amount);
+    void take_money(int amount);
+    void transfer_to(Account& account, int amount);
+    void print() const;
 
 private:
     // Generates IBAN (based on running_number_ below).
@@ -24,6 +31,10 @@ private:
     static int running_number_;
 
     // More attributes/methods
+    string owner_;
+    bool has_credit_;
+    int balance_;
+    string iban_;
 };
 
 #endif // ACCOUNT_HH
