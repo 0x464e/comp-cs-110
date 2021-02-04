@@ -4,18 +4,24 @@
 
 using namespace std;
 
-void produce_random_numbers(unsigned int lower, unsigned int upper)
+
+void produce_random_numbers(uint lower, uint upper, uint seed_value)
 {
-    // Implement your function here
+    static default_random_engine gen(seed_value);
+    static uniform_int_distribution<int> distr(lower, upper);
+    
+    cout << "Your drawn random number is " << distr(gen) << endl;
 }
 
 int main()
 {
-    unsigned int lower_bound, upper_bound;
+    uint lower_bound, upper_bound, seed_value;
     cout << "Enter a lower bound: ";
     cin >> lower_bound;
     cout << "Enter an upper bound: ";
     cin >> upper_bound;
+    cout << "Enter a seed value: ";
+    cin >> seed_value;
 
     if(lower_bound >= upper_bound)
     {
@@ -24,7 +30,16 @@ int main()
         return EXIT_FAILURE;
     }
 
-    produce_random_numbers(lower_bound, upper_bound);
+    char c;
+    for (;;)
+    {
+        produce_random_numbers(lower_bound, upper_bound, seed_value);
+        cout << "Press c to continue or q to quit: ";
+        cin >> c;
+        if (c == 'q')
+            break;
+        cout << endl;
+    }
 
     return EXIT_SUCCESS;
 }
