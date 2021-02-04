@@ -35,6 +35,7 @@ private:
     bool has_credit_;
     int balance_;
     string iban_;
+    int credit_limit_;
 };
 
 #endif // ACCOUNT_HH
