@@ -25,6 +25,7 @@ vector<string> split(const string& line, const char separator, const bool ignore
         parts.push_back(part);
     else if (!ignore_empty)
         parts.push_back("");
+
     return parts;
 }
 
