@@ -18,7 +18,7 @@ int main()
 
 	if (!input_file_obj)
 	{
-		cout << "Error: failed opening the file." << endl;
+		cout << "Error! The file " << input_file << " cannot be opened." << endl;
 		return EXIT_FAILURE;
 	}
 
