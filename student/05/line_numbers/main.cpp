@@ -14,13 +14,14 @@ int main()
 	getline(cin, output_file);
 
 	ifstream input_file_obj(input_file);
-	ofstream output_file_obj(output_file);
 
 	if (!input_file_obj)
 	{
 		cout << "Error! The file " << input_file << " cannot be opened." << endl;
 		return EXIT_FAILURE;
 	}
+
+	ofstream output_file_obj(output_file);
 
 	string line;
 	auto i = 0;
