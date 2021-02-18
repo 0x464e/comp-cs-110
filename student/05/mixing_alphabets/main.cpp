@@ -1,26 +1,35 @@
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <random>
+#include <fstream>
+
+using namespace std;
 
 int main()
 {
-    // This is a random number generator that should be given as parameter to the
-    // function of the algorithm library to shuffle letters
-    std::minstd_rand generator;
+	string input_file;
+	string output_file;
+	cout << "Input file: ";
+	getline(cin, input_file);
+	cout << "Output file: ";
+	getline(cin, output_file);
 
-    std::cout << "Enter some text. Quit by entering the word \"END\"." << std::endl;
-    std::string word;
+	ifstream input_file_obj(input_file);
 
-    while (std::cin >> word)
-    {
-        if (word == "END")
-        {
-            return EXIT_SUCCESS;
-        }
+	if (!input_file_obj)
+	{
+		cout << "Error! The file " << input_file << " cannot be opened." << endl;
+		return EXIT_FAILURE;
+	}
 
-        // TODO: implement your solution here
-	
-        std::cout << word << std::endl;
-    }
+	ofstream output_file_obj(output_file);
+
+	string line;
+	auto i = 0;
+	while (getline(input_file_obj, line))
+		output_file_obj << to_string(++i) << " " << line << endl;
+	input_file_obj.close();
+	output_file_obj.close();
+
+	return EXIT_SUCCESS;
 }
+
