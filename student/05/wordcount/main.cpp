@@ -10,9 +10,7 @@ int main()
 {
 	string input_file;
 	cout << "Input file: ";
-	//getline(cin, input_file);
-	input_file = "a";
-	cout << endl;
+	getline(cin, input_file);
 
 	ifstream input_file_obj(input_file);
 
