@@ -22,7 +22,7 @@ int main()
 
 	string line;
 	unsigned line_number = 0;
-	map<string, pair<int, set<unsigned>>> word_counts;
+	map<string, set<unsigned>> word_counts;
 
 	while (getline(input_file_obj, line))
 	{
@@ -37,10 +37,9 @@ int main()
 				if(i == l - 1)
 					word += c;
 				if (word_counts.find(word) != word_counts.end())
-					word_counts.at(word).first++, 
-					word_counts.at(word).second.insert(line_number);
+					word_counts.at(word).insert(line_number);
 				else
-					word_counts.insert({ word, {1, {line_number}} });
+					word_counts.insert({ word, {line_number} });
 				word = "";
 			}
 			else
@@ -53,10 +52,10 @@ int main()
 	while (iter != word_counts.end())
 	{
 		string line_numbers;
-		for (const auto& i : iter->second.second)
+		for (const auto& i : iter->second)
 			line_numbers += to_string(i) + ", ";
 
-		cout << iter->first << " " << iter->second.first
+		cout << iter->first << " " << iter->second.size()
 			 << ": " << line_numbers.substr(0, line_numbers.length() - 2) << endl;
 		++iter;
 	}
