@@ -13,6 +13,7 @@ const std::string DUPLICATE_STOP_LINE = "Error: Stop/line already exists.";
 const std::string INPUT_PROMPT = "tramway> ";
 const std::string INVALID_COMMAND = "Error: Invalid input.";
 const std::string UNKNOWN_LINE = "Error: Line could not be found.";
+const std::string UNKNOWN_STOP = "Error: Stop could not be found.";
 
 typedef std::map<std::string, std::map<std::string, double>> tramway;
 
@@ -190,7 +191,7 @@ void print_tramlines(const tramway& database)
 	}
 }
 
-//Attempts to print the specified tramline
+//Attempts to print the specified tramline in alphabetical order
 //returns false if the specified tramline doesn't exist
 bool print_tramline(const tramway& database, const std::string& line)
 {
@@ -225,6 +226,48 @@ bool print_tramline(const tramway& database, const std::string& line)
 	for(const auto& stop : stops)
 	{
 		std::cout << " - " << stop.first << " : " << stop.second << std::endl;
+	}
+
+	return true;
+}
+
+void print_stops(const tramway& database)
+{
+	//use set to automatically remove duplicates and sort alphabetically
+	std::set<std::string> stops;
+	std::cout << "All stops in alphabetical order:" << std::endl;
+
+	for (const auto& stop : database)
+	{
+		stops.insert(stop.first);
+	}
+
+	for (const auto& line : stops)
+	{
+		std::cout << line << std::endl;
+	}
+}
+
+//Attempts to print all the tramlines the specified stop is found in
+//returns false if the specified stop doesn't exist
+bool print_lines_in_stop(const tramway& database, const std::string& stop)
+{
+	if(database.find(stop) == database.end())
+	{
+		return false;
+	}
+
+	//use set to automatically remove duplicates and sort alphabetically
+	std::set<std::string> lines;
+	for(const auto& line : database.at(stop))
+	{
+		lines.insert(line.first);
+	}
+
+	//print each stop and distance from the departure stop
+	for (const auto& line : lines)
+	{
+		std::cout << " - " << line << std::endl;
 	}
 
 	return true;
@@ -275,7 +318,7 @@ void rasse_user_interface(tramway& database)
 		}
 		else if (command == "STOPS")
 		{
-
+			print_stops(database);
 		}
 		else if (command == "STOP")
 		{
@@ -283,6 +326,10 @@ void rasse_user_interface(tramway& database)
 			{
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
+			}
+			if(!print_lines_in_stop(database, arguments.at(0)))
+			{
+				std::cout << UNKNOWN_STOP << std::endl;
 			}
 		}
 		else if (command == "DISTANCE")
