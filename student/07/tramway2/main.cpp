@@ -147,6 +147,11 @@ tramway_stop create_tramway_stop(const std::vector<std::string>& fields,
 	//loop through each stop in the database
 	for (const auto& db_stop : database)
 	{
+		//ignore tramlines with no stops (stop is "")
+		if(db_stop.first.empty())
+		{
+			continue;
+		}
 		//if the current stop is found in the same tramline as the current 
 		//input file line's tramline, check if the distance is the same
 		//if distance is the same, it's a duplicate tramline
@@ -284,7 +289,7 @@ bool print_tramline(const tramway& database, const std::string& line)
 	//print each stop and distance from the departure stop
 	for (const auto& stop : stops)
 	{
-		//ignore tramlines without any stops (stop is "")
+		//ignore tramlines with no stops (stop is "")
 		if (!stop.first.empty())
 		{
 			std::cout << " - " << stop.first << " : " << stop.second << std::endl;
@@ -307,7 +312,7 @@ void print_stops(const tramway& database)
 
 	for (const auto& stop : stops)
 	{
-		//ignore tramlines without any stops (stop is "")
+		//ignore tramlines with no stops (stop is "")
 		if (!stop.empty())
 		{
 			std::cout << stop << std::endl;
@@ -533,7 +538,7 @@ void rasse_user_interface(tramway& database)
 		}
 		else if (command == "addstop")
 		{
-			if (arguments.empty())
+			if (arguments.size() < 3)
 			{
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
