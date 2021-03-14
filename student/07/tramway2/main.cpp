@@ -212,6 +212,9 @@ bool print_tramline(const tramway& database, const std::string& line)
 		return false;
 	}
 
+	std::cout << "Line " << line << " goes through these stops "
+		<< "in the order they are listed:" << std::endl;
+
 	//sort stops by ascending distance by using a custom comparator lambda
 	//the next stop is always guaranteed to be further away from the departure 
 	//stop, so this is valid
@@ -225,7 +228,11 @@ bool print_tramline(const tramway& database, const std::string& line)
 	//print each stop and distance from the departure stop
 	for (const auto& stop : stops)
 	{
-		std::cout << " - " << stop.first << " : " << stop.second << std::endl;
+		//ignore tramlines without any stops (stop is "")
+		if(!stop.first.empty())
+		{
+			std::cout << " - " << stop.first << " : " << stop.second << std::endl;
+		}
 	}
 
 	return true;
@@ -242,9 +249,13 @@ void print_stops(const tramway& database)
 		stops.insert(stop.first);
 	}
 
-	for (const auto& line : stops)
+	for (const auto& stop : stops)
 	{
-		std::cout << line << std::endl;
+		//ignore tramlines without any stops (stop is "")
+		if(!stop.empty())
+		{
+			std::cout << stop << std::endl;
+		}
 	}
 }
 
@@ -316,6 +327,30 @@ void print_distance_between_stops(const tramway& database,
 	std::cout << "Distance between " << stop1 << " and " << stop2 << " is "
 		<< std::abs(database.at(stop1).at(line) - database.at(stop2).at(line))
 		<< std::endl;
+}
+
+//Attempts to add a new tramline to the database
+void add_tramline(tramway& database, const std::string& line)
+{
+	if(is_line_in_database(database, line))
+	{
+		std::cout << DUPLICATE_STOP_LINE << std::endl;
+		return;
+	}
+
+	//tramlines with no stops are stored under the key ""
+	if(database.find("") == database.end())
+	{
+		database.insert(
+			{
+				"",
+				{ { line, 0.0 } }
+			});
+	}
+	else
+	{
+		database.at("").insert({ line, 0.0 });
+	}
 }
 
 //runs the rasse user interface
@@ -395,6 +430,7 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
+			add_tramline(database, arguments.at(0));
 		}
 		else if (command == "ADDSTOP")
 		{
