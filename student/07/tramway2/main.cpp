@@ -1,3 +1,14 @@
+/*
+* COMP.CS.110 K2021
+*
+* Program author
+* Name: Otto 
+* Student number: 
+* UserID: 
+* E-Mail: 
+*/
+
+
 #include <iostream>
 #include <string>
 #include <map>
@@ -5,6 +16,7 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+//#include <cctype>
 
 const std::string INPUT_FILENAME = "Give a name for input file: ";
 const std::string INVALID_FILE = "Error: File could not be read.";
@@ -399,18 +411,21 @@ void rasse_user_interface(tramway& database)
 
 		//the command is the first element in the split inputs
 		//arguments are all the following elements
-		const auto& command = split_inputs.at(0);
+		auto command = split_inputs.at(0);
+
+		//transform command to lowercase
+		std::transform(command.begin(), command.end(), command.begin(), tolower);
 		const std::vector<std::string> arguments(split_inputs.begin() + 1, split_inputs.end());
 
-		if (command == "QUIT")
+		if (command == "quit")
 		{
 			break;
 		}
-		if (command == "LINES")
+		if (command == "lines")
 		{
 			print_tramlines(database);
 		}
-		else if (command == "LINE")
+		else if (command == "line")
 		{
 			//requires one argument
 			if (arguments.empty())
@@ -423,11 +438,11 @@ void rasse_user_interface(tramway& database)
 				std::cout << UNKNOWN_LINE << std::endl;
 			}
 		}
-		else if (command == "STOPS")
+		else if (command == "stops")
 		{
 			print_stops(database);
 		}
-		else if (command == "STOP")
+		else if (command == "stop")
 		{
 			if (arguments.empty())
 			{
@@ -439,7 +454,7 @@ void rasse_user_interface(tramway& database)
 				std::cout << UNKNOWN_STOP << std::endl;
 			}
 		}
-		else if (command == "DISTANCE")
+		else if (command == "distance")
 		{
 			//requires three arguments
 			if (arguments.size() < 3)
@@ -450,7 +465,7 @@ void rasse_user_interface(tramway& database)
 			print_distance_between_stops(database, arguments.at(0),
 				arguments.at(1), arguments.at(2));
 		}
-		else if (command == "ADDLINE")
+		else if (command == "addline")
 		{
 			if (arguments.empty())
 			{
@@ -459,7 +474,7 @@ void rasse_user_interface(tramway& database)
 			}
 			add_tramline(database, arguments.at(0));
 		}
-		else if (command == "ADDSTOP")
+		else if (command == "addstop")
 		{
 			if (arguments.empty())
 			{
@@ -467,7 +482,7 @@ void rasse_user_interface(tramway& database)
 				continue;
 			}
 		}
-		else if (command == "REMOVE")
+		else if (command == "remove")
 		{
 			if (arguments.empty())
 			{
