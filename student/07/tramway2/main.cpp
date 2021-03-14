@@ -32,37 +32,64 @@ void print_rasse()
 		"-------------------------------" << std::endl;
 }
 
-
-//Splits the input string by the specified delimiter.
-//Optinally ignores empty parts.
+//Splits the input string by the specified separator.
+//Words wrapped in quotes will be returned as one part.
+//Optinally includes empty parts.
 //Returns a vector of the split strings.
-std::vector<std::string> split(const std::string& s, const char delimiter,
-	const bool ignore_empty = false)
+std::vector<std::string> split(const std::string& user_input,
+	const char separator, const bool include_empty = false)
 {
-	std::vector<std::string> result;
-	auto tmp = s;
+	if (user_input.empty())
+	{
+		return std::vector<std::string>();
+	}
 
-	while (tmp.find(delimiter) != std::string::npos)
+	//vector to hold the separated parts
+	std::vector<std::string> parts = {};
+	//temp variable to hold the current part
+	std::string part = "";
+
+	//tells whether parsing is currently happening 
+	//inside or outside of a quoted substring
+	auto inside_quotes = false;
+
+	//loop through each character looking for occurrences of
+	//the separator character
+	for (auto c : user_input)
 	{
-		auto new_part = tmp.substr(0, tmp.find(delimiter));
-		tmp = tmp.substr(tmp.find(delimiter) + 1, tmp.size());
-		if (!(ignore_empty && new_part.empty()))
+		if (c == '"')
 		{
-			result.push_back(new_part);
+			//toggle being inside quoted substring
+			inside_quotes = !inside_quotes;
+			continue;
 		}
+		//if inside a quoted substring, ignore the main separator
+		if (!inside_quotes && c == separator)
+		{
+			//include empty parts only if asked for
+			if (!part.empty() || include_empty)
+			{
+				parts.push_back(part);
+			}
+			part = "";
+			continue;
+		}
+		part += c;
 	}
-	if (!(ignore_empty && tmp.empty()))
+
+	//also add in whatever was after the last separator
+	if (!part.empty() || include_empty)
 	{
-		result.push_back(tmp);
+		parts.push_back(part);
 	}
-	return result;
+	return parts;
 }
 
 
 std::tuple<std::string, std::string, double> is_valid_input_file_line(const std::string& file_line,
 	const tramway& database)
 {
-	const auto fields = split(file_line, ';');
+	const auto fields = split(file_line, ';', true);
 	const auto field_count = fields.size();
 
 	//if input file line has fewer than 2 lines, or more than 3 lines,
@@ -364,7 +391,7 @@ void rasse_user_interface(tramway& database)
 		std::getline(std::cin, user_input);
 
 		//split the user input by space
-		const auto split_inputs = split(user_input, ' ', true);
+		const auto split_inputs = split(user_input, ' ');
 		if (split_inputs.empty())
 		{
 			continue;
