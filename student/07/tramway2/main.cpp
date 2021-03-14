@@ -3,11 +3,14 @@
 #include <map>
 #include <fstream>
 #include <vector>
+#include <set>
+#include <algorithm>
 
 const std::string INPUT_FILENAME = "Give a name for input file: ";
 const std::string INVALID_FILE = "Error: File could not be read.";
 const std::string INVALID_FILE_FORMAT = "Error: Invalid format in file.";
 const std::string DUPLICATE_STOP_LINE = "Error: Stop/line already exists.";
+const std::string INPUT_PROMPT = "tramway> ";
 
 typedef std::map<std::string, std::map<std::string, double>> tramway;
 
@@ -92,9 +95,9 @@ std::tuple<std::string, std::string, double> is_valid_input_file_line(const std:
 		std::cout << DUPLICATE_STOP_LINE << std::endl;
 		return std::tuple<std::string, std::string, double>();
 	}
-	
+
 	//loop through each stop in the database
-	for(const auto& db_stop : database)
+	for (const auto& db_stop : database)
 	{
 		//if the current stop is found in the same tramline as the current 
 		//input file line's tramline, check if the distance is the same
@@ -144,7 +147,7 @@ bool read_input_file(tramway& database)
 		const auto& stop = std::get<1>(fields);
 		const auto& distance = std::get<2>(fields);
 
-
+		//if the stop doesn't already exist, simply add it in
 		if (database.find(stop) == database.end())
 		{
 			database.insert(
@@ -153,6 +156,7 @@ bool read_input_file(tramway& database)
 					{ { line, distance } }
 				});
 		}
+		//else add a new line and distance for the stop
 		else
 		{
 			database.at(stop).insert({ line, distance });
@@ -162,15 +166,71 @@ bool read_input_file(tramway& database)
 	return true;
 }
 
+//prints each tramline found in the input database in alphabetical order
+void print_tramlines(const tramway& database)
+{
+	//use set to automatically remove duplicates and sort alphabetically
+	std::set<std::string> lines;
+	std::cout << "All tramlines in alphabetical order:" << std::endl;
+
+	//loop each tramline under each stop
+	for (const auto& stop : database)
+	{
+		for (const auto& line : stop.second)
+		{
+			lines.insert(line.first);
+		}
+	}
+
+	for (const auto& line : lines)
+	{
+		std::cout << line << std::endl;
+	}
+}
+
+//runs the rasse user interface
+//handles all user input commands
+void rasse_user_interface(tramway& database)
+{
+	for (;;)
+	{
+		std::string user_input = "";
+		std::cout << INPUT_PROMPT;
+		std::getline(std::cin, user_input);
+
+		//split the user input by space
+		const auto split_inputs = split(user_input, ' ', true);
+		if (split_inputs.empty())
+		{
+			continue;
+		}
+
+		//the command is the first element in the split inputs
+		//arguments are all the following elements
+		const auto& command = split_inputs.at(0);
+		const std::vector<std::string> arguments(split_inputs.begin() + 1, split_inputs.end());
+
+		if (command == "QUIT")
+		{
+			break;
+		}
+		if (command == "LINES")
+		{
+			print_tramlines(database);
+		}
+	}
+}
+
 //entry point
 int main()
 {
 	tramway database;
 	print_rasse();
+	//attempt to fill the database byref
 	if (!read_input_file(database))
 	{
 		return EXIT_FAILURE;
 	}
-
+	rasse_user_interface(database);
 	return EXIT_SUCCESS;
 }
