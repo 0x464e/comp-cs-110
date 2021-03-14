@@ -12,6 +12,7 @@ const std::string INVALID_FILE_FORMAT = "Error: Invalid format in file.";
 const std::string DUPLICATE_STOP_LINE = "Error: Stop/line already exists.";
 const std::string INPUT_PROMPT = "tramway> ";
 const std::string INVALID_COMMAND = "Error: Invalid input.";
+const std::string UNKNOWN_LINE = "Error: Line could not be found.";
 
 typedef std::map<std::string, std::map<std::string, double>> tramway;
 
@@ -189,6 +190,46 @@ void print_tramlines(const tramway& database)
 	}
 }
 
+//Attempts to print the specified tramline
+//returns false if the specified tramline doesn't exist
+bool print_tramline(const tramway& database, const std::string& line)
+{
+	//vector of stop-distance pairs to store the whole tramline
+	std::vector<std::pair<std::string, double>> stops;
+
+	//loop through each stop checking if it's found on the specified line
+	for(const auto& stop : database)
+	{
+		if(stop.second.find(line) != stop.second.end())
+		{
+			stops.emplace_back(stop.first, stop.second.at(line));
+		}
+	}
+
+	if(stops.empty())
+	{
+		return false;
+	}
+	
+	//sort stops by ascending distance by using a custom comparator lambda
+	//the next stop is always guaranteed to be further away from the departure 
+	//stop, so this is valid
+	std::sort(stops.begin(), stops.end(),
+		[](const std::pair<std::string, double>& stop1, 
+			const std::pair<std::string, double>& stop2)
+		{
+			return stop1.second < stop2.second;
+		});
+
+	//print each stop and distance from the departure stop
+	for(const auto& stop : stops)
+	{
+		std::cout << " - " << stop.first << " : " << stop.second << std::endl;
+	}
+
+	return true;
+}
+
 //runs the rasse user interface
 //handles all user input commands
 void rasse_user_interface(tramway& database)
@@ -226,6 +267,10 @@ void rasse_user_interface(tramway& database)
 			{
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
+			}
+			if (!print_tramline(database, arguments.at(0)))
+			{
+				std::cout << UNKNOWN_LINE << std::endl;
 			}
 		}
 		else if (command == "STOPS")
