@@ -11,6 +11,7 @@ const std::string INVALID_FILE = "Error: File could not be read.";
 const std::string INVALID_FILE_FORMAT = "Error: Invalid format in file.";
 const std::string DUPLICATE_STOP_LINE = "Error: Stop/line already exists.";
 const std::string INPUT_PROMPT = "tramway> ";
+const std::string INVALID_COMMAND = "Error: Invalid input.";
 
 typedef std::map<std::string, std::map<std::string, double>> tramway;
 
@@ -217,6 +218,60 @@ void rasse_user_interface(tramway& database)
 		if (command == "LINES")
 		{
 			print_tramlines(database);
+		}
+		else if (command == "LINE")
+		{
+			//requires one argument
+			if(arguments.empty())
+			{
+				std::cout << INVALID_COMMAND << std::endl;
+				continue;
+			}
+		}
+		else if (command == "STOPS")
+		{
+
+		}
+		else if (command == "STOP")
+		{
+			if (arguments.empty())
+			{
+				std::cout << INVALID_COMMAND << std::endl;
+				continue;
+			}
+		}
+		else if (command == "DISTANCE")
+		{
+			//requires three arguments
+			if (arguments.size() < 3)
+			{
+				std::cout << INVALID_COMMAND << std::endl;
+				continue;
+			}
+		}
+		else if (command == "ADDLINE")
+		{
+			if (arguments.empty())
+			{
+				std::cout << INVALID_COMMAND << std::endl;
+				continue;
+			}
+		}
+		else if (command == "ADDSTOP")
+		{
+			if (arguments.empty())
+			{
+				std::cout << INVALID_COMMAND << std::endl;
+				continue;
+			}
+		}
+		else if (command == "REMOVE")
+		{
+			if (arguments.empty())
+			{
+				std::cout << INVALID_COMMAND << std::endl;
+				continue;
+			}
 		}
 	}
 }
