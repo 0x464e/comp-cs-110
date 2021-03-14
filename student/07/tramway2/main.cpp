@@ -437,6 +437,18 @@ void add_stop_with_printouts(tramway& database, const std::string& line,
 	std::cout << "Stop was added." << std::endl;
 }
 
+void remove_stop(tramway& database, const std::string& stop)
+{
+	if (database.find(stop) == database.end())
+	{
+		std::cout << UNKNOWN_STOP << std::endl;
+		return;
+	}
+
+	database.erase(stop);
+	std::cout << "Stop was removed from all lines." << std::endl;
+}
+
 //runs the rasse user interface
 //handles all user input commands
 void rasse_user_interface(tramway& database)
@@ -536,6 +548,7 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
+			remove_stop(database, arguments.at(0));
 		}
 		else
 		{
