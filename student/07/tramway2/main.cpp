@@ -199,31 +199,31 @@ bool print_tramline(const tramway& database, const std::string& line)
 	std::vector<std::pair<std::string, double>> stops;
 
 	//loop through each stop checking if it's found on the specified line
-	for(const auto& stop : database)
+	for (const auto& stop : database)
 	{
-		if(stop.second.find(line) != stop.second.end())
+		if (stop.second.find(line) != stop.second.end())
 		{
 			stops.emplace_back(stop.first, stop.second.at(line));
 		}
 	}
 
-	if(stops.empty())
+	if (stops.empty())
 	{
 		return false;
 	}
-	
+
 	//sort stops by ascending distance by using a custom comparator lambda
 	//the next stop is always guaranteed to be further away from the departure 
 	//stop, so this is valid
 	std::sort(stops.begin(), stops.end(),
-		[](const std::pair<std::string, double>& stop1, 
+		[](const std::pair<std::string, double>& stop1,
 			const std::pair<std::string, double>& stop2)
-		{
-			return stop1.second < stop2.second;
-		});
+	{
+		return stop1.second < stop2.second;
+	});
 
 	//print each stop and distance from the departure stop
-	for(const auto& stop : stops)
+	for (const auto& stop : stops)
 	{
 		std::cout << " - " << stop.first << " : " << stop.second << std::endl;
 	}
@@ -252,14 +252,14 @@ void print_stops(const tramway& database)
 //returns false if the specified stop doesn't exist
 bool print_lines_in_stop(const tramway& database, const std::string& stop)
 {
-	if(database.find(stop) == database.end())
+	if (database.find(stop) == database.end())
 	{
 		return false;
 	}
 
 	//use set to automatically remove duplicates and sort alphabetically
 	std::set<std::string> lines;
-	for(const auto& line : database.at(stop))
+	for (const auto& line : database.at(stop))
 	{
 		lines.insert(line.first);
 	}
@@ -271,6 +271,51 @@ bool print_lines_in_stop(const tramway& database, const std::string& stop)
 	}
 
 	return true;
+}
+
+//Checks whether or not a tramline exists in the specified database
+//returns true if it exists, false if not
+bool is_line_in_database(const tramway& database, const std::string& line)
+{
+	auto exists = false;
+
+	//loop through each stop in the database
+	for (const auto& stop : database)
+	{
+		//if the tramline is found even once, it exists
+		if (stop.second.find(line) != stop.second.end())
+		{
+			exists = true;
+			break;
+		}
+	}
+	
+	return exists;
+}
+
+void print_distance_between_stops(const tramway& database,
+	const std::string& line, const std::string& stop1, const std::string& stop2)
+{
+	if(!is_line_in_database(database, line))
+	{
+		std::cout << UNKNOWN_LINE << std::endl;
+		return;
+	}
+
+	//if either of the stops is unknown, or either of the stops 
+	//aren't found on to the specified tramline
+	if(database.find(stop1) == database.end() || 
+		database.at(stop1).find(line) == database.at(stop1).end() ||
+		database.find(stop2) == database.end() ||
+		database.at(stop1).find(line) == database.at(stop1).end())
+	{
+		std::cout << UNKNOWN_STOP << std::endl;
+		return;
+	}
+
+	std::cout << "Distance between " << stop1 << " and " << stop2 << " is "
+		<< std::abs(database.at(stop1).at(line) - database.at(stop2).at(line))
+		<< std::endl;
 }
 
 //runs the rasse user interface
@@ -306,7 +351,7 @@ void rasse_user_interface(tramway& database)
 		else if (command == "LINE")
 		{
 			//requires one argument
-			if(arguments.empty())
+			if (arguments.empty())
 			{
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
@@ -327,7 +372,7 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
-			if(!print_lines_in_stop(database, arguments.at(0)))
+			if (!print_lines_in_stop(database, arguments.at(0)))
 			{
 				std::cout << UNKNOWN_STOP << std::endl;
 			}
@@ -340,6 +385,8 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
+			print_distance_between_stops(database, arguments.at(0),
+				arguments.at(1), arguments.at(2));
 		}
 		else if (command == "ADDLINE")
 		{
@@ -364,6 +411,10 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
+		}
+		else
+		{
+			std::cout << INVALID_COMMAND << std::endl;
 		}
 	}
 }
