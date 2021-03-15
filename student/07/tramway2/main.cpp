@@ -1,4 +1,28 @@
 /*
+* Tramway
+*
+* Description:
+* This program models a tramway system of different lines and stops. Each line
+* is associated with different stops and each stop is associated with a distance
+* from the departure stop. The program starts off by reading a specified input
+* file, which contains information about the tramway system in csv format:
+* line;stop[;distance]
+* the distance value being optional and defaulting to zero, indicating it being
+* the departure stop. A line can't have duplicate stops, this is checked by both
+* stop name & distance. After the input file has been parsed and the database
+* has been populated, the command line user interface opens. The program
+* contains nine commands:
+* QUIT								 - quit the program
+* LINES								 - print all lines
+* LINE		<line>					 - print specific line
+* STOPS								 - print all stops
+* STOP		<stop>					 - print specific stop
+* DISTANCE	<line> <stop1> <stop2>	 - distance between two stops on the line
+* ADDLINE	<line>					 - adds a new line to the database
+* ADDSTOP	<line> <stop> <distance> - adds a new stop to the database
+* REMOVE	<stop>					 - removes a stop from the database
+*
+*
 * COMP.CS.110 K2021
 *
 * Program author
@@ -6,6 +30,14 @@
 * Student number: 
 * UserID: 
 * E-Mail: 
+* Date: 15.03.2021
+*
+* Notes about the program and it's implementation:
+* If using the tramway stops as the outer map's keys in the database is somehow
+* more desirable, I have a working version for that as well in a previous commit.
+* Switching to using lines as the outer map's keys in the database was an
+* afterthought. After I made the switch to that, I really couldn't say why I
+* didn't do it that way right away. This seems so much better and cleaner.
 */
 
 #include <iostream>
@@ -27,7 +59,7 @@ const std::string UNKNOWN_STOP = "Error: Stop could not be found.";
 
 typedef std::map<std::string, std::map<std::string, double>> tramway;
 
-//a struct to pass around certain tramway stop's infomation more conveniently
+//a struct to pass around certain tramway stop's information more conveniently
 struct tramway_stop
 {
 	std::string line;
@@ -51,8 +83,8 @@ void print_rasse()
 }
 
 //Splits the input string by the specified separator.
-//Words wrapped in quotes will be returned as one part.
-//Optinally includes empty parts.
+//Substrings wrapped in quotes will be returned as one part.
+//Optionally includes empty parts.
 //Returns a vector of the split strings.
 std::vector<std::string> split(const std::string& user_input,
 	const char separator, const bool include_empty = false)
@@ -111,7 +143,7 @@ tramway_stop create_tramway_stop(const std::vector<std::string>& fields,
 	const auto field_count = fields.size();
 
 	//if input file line has fewer than 2 lines, or more than 3 lines,
-	//return an empty tuple to indicate an invalid line
+	//return an empty tramway struct to indicate invalid input
 	if (field_count < 2 || field_count > 3)
 	{
 		std::cout << INVALID_FILE_FORMAT << std::endl;
@@ -135,35 +167,32 @@ tramway_stop create_tramway_stop(const std::vector<std::string>& fields,
 		distance = fields.at(2).empty() ? 0.0 : std::stod(fields.at(2));
 	}
 
-	//if the stop already exists in the database and
-	//the stop is already specified for this line
-	if (database.find(stop) != database.end() &&
-		database.at(stop).find(line) != database.at(stop).end())
+	//if line exists in the database and the stop
+	//is already specified for this line
+	if (database.find(line) != database.end() &&
+		database.at(line).find(stop) != database.at(line).end())
 	{
 		std::cout << DUPLICATE_STOP_LINE << std::endl;
 		return tramway_stop();
 	}
 
-	//loop through each stop in the database
-	for (const auto& db_stop : database)
+	//if the line exists in the database
+	if (database.find(line) != database.end())
 	{
-		//ignore tramlines with no stops (stop is "")
-		if(db_stop.first.empty())
+		//loop through each stop in the database under the specified line
+		for (const auto& db_stop : database.at(line))
 		{
-			continue;
-		}
-		//if the current stop is found in the same tramline as the current 
-		//input file line's tramline, check if the distance is the same
-		//if distance is the same, it's a duplicate tramline
-		if (db_stop.second.find(line) != db_stop.second.end() &&
-			db_stop.second.at(line) == distance)
-		{
-			std::cout << DUPLICATE_STOP_LINE << std::endl;
-			return tramway_stop();
+			//if a stop in the database already has the specified distance,
+			//the input stop is invalid
+			if (db_stop.second == distance)
+			{
+				std::cout << DUPLICATE_STOP_LINE << std::endl;
+				return tramway_stop();
+			}
 		}
 	}
 
-	struct tramway_stop stop_struct;
+	tramway_stop stop_struct;
 	stop_struct.line = line;
 	stop_struct.name = stop;
 	stop_struct.distance = distance;
@@ -176,23 +205,20 @@ tramway_stop create_tramway_stop(const std::vector<std::string>& fields,
 //The stop is to be validated with is_valid_stop() before passed into here
 void add_stop(tramway& database, const tramway_stop& stop)
 {
-	const auto& line = stop.line;
-	const auto& stop_name = stop.name;
-	const auto& distance = stop.distance;
-
-	//if the stop doesn't already exist, simply add it in
-	if (database.find(stop_name) == database.end())
+	//if the line doesn't already exist, simply add it in
+	//along with the stop and distance
+	if (database.find(stop.line) == database.end())
 	{
 		database.insert(
 			{
-				stop_name,
-				{ { line, distance } }
+				stop.line,
+				{ { stop.name, stop.distance } }
 			});
 	}
-	//else add a new line and distance for the stop
+	//else add a new stop and distance for the stop
 	else
 	{
-		database.at(stop_name).insert({ line, distance });
+		database.at(stop.line).insert({ stop.name, stop.distance });
 	}
 }
 
@@ -220,11 +246,13 @@ bool read_input_file(tramway& database)
 	{
 		const auto fields = split(file_line, ';', true);
 		const auto stop = create_tramway_stop(fields, database);
+
 		//if the above check returned an empty tramline, the file line was invalid
 		if (stop.line.empty())
 		{
 			return false;
 		}
+
 		add_stop(database, stop);
 	}
 	return true;
@@ -233,44 +261,30 @@ bool read_input_file(tramway& database)
 //prints each tramline found in the input database in alphabetical order
 void print_tramlines(const tramway& database)
 {
-	//use set to automatically remove duplicates and sort alphabetically
-	std::set<std::string> lines;
 	std::cout << "All tramlines in alphabetical order:" << std::endl;
 
-	//loop each tramline under each stop
-	for (const auto& stop : database)
+	//keys in map are sorted alphabetically automatically
+	for (const auto& line : database)
 	{
-		for (const auto& line : stop.second)
-		{
-			lines.insert(line.first);
-		}
-	}
-
-	for (const auto& line : lines)
-	{
-		std::cout << line << std::endl;
+		std::cout << line.first << std::endl;
 	}
 }
 
 //Attempts to print the specified tramline in alphabetical order
-//returns false if the specified tramline doesn't exist
-bool print_tramline(const tramway& database, const std::string& line)
+void print_tramline(const tramway& database, const std::string& line)
 {
 	//vector of stop-distance pairs to store the whole tramline
 	std::vector<std::pair<std::string, double>> stops;
 
-	//loop through each stop checking if it's found on the specified line
-	for (const auto& stop : database)
+	if (database.find(line) == database.end())
 	{
-		if (stop.second.find(line) != stop.second.end())
-		{
-			stops.emplace_back(stop.first, stop.second.at(line));
-		}
+		std::cout << UNKNOWN_LINE << std::endl;
+		return;
 	}
 
-	if (stops.empty())
+	for (const auto& stop : database.at(line))
 	{
-		return false;
+		stops.emplace_back(stop.first, stop.second);
 	}
 
 	std::cout << "Line " << line << " goes through these stops "
@@ -289,14 +303,12 @@ bool print_tramline(const tramway& database, const std::string& line)
 	//print each stop and distance from the departure stop
 	for (const auto& stop : stops)
 	{
-		//ignore tramlines with no stops (stop is "")
+		//ignore empty tramline
 		if (!stop.first.empty())
 		{
 			std::cout << " - " << stop.first << " : " << stop.second << std::endl;
 		}
 	}
-
-	return true;
 }
 
 void print_stops(const tramway& database)
@@ -305,115 +317,105 @@ void print_stops(const tramway& database)
 	std::set<std::string> stops;
 	std::cout << "All stops in alphabetical order:" << std::endl;
 
-	for (const auto& stop : database)
+	//loop through each stop under each line
+	for (const auto& line : database)
 	{
-		stops.insert(stop.first);
+		for (const auto& stop : line.second)
+		{
+			stops.insert(stop.first);
+		}
 	}
 
 	for (const auto& stop : stops)
 	{
-		//ignore tramlines with no stops (stop is "")
-		if (!stop.empty())
-		{
-			std::cout << stop << std::endl;
-		}
+		std::cout << stop << std::endl;
 	}
 }
 
-//Attempts to print all the tramlines the specified stop is found in
-//returns false if the specified stop doesn't exist
-bool print_lines_in_stop(const tramway& database, const std::string& stop)
+//Checks whether a stop exists in the specified database
+//returns true if it exists, false if not
+bool is_stop_in_database(const tramway& database, const std::string& stop)
 {
-	if (database.find(stop) == database.end())
+	//loop through each stop in the database
+	for (const auto& line : database)
 	{
-		return false;
+		//if the stop is found even once, it exists
+		if (line.second.find(stop) != line.second.end())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+//Attempts to print all the tramlines the specified stop is found in
+void print_lines_in_stop(const tramway& database, const std::string& stop)
+{
+	if (!is_stop_in_database(database, stop))
+	{
+		std::cout << UNKNOWN_STOP << std::endl;
+		return;
 	}
 
 	std::cout << "Stop " << stop << " can be found on the following lines:" << std::endl;
 
 	//use set to automatically remove duplicates and sort alphabetically
 	std::set<std::string> lines;
-	for (const auto& line : database.at(stop))
+	for (const auto& line : database)
 	{
-		lines.insert(line.first);
+		if (line.second.find(stop) != line.second.end())
+		{
+			lines.insert(line.first);
+		}
 	}
 
-	//print each stop and distance from the departure stop
+	//print each line
 	for (const auto& line : lines)
 	{
 		std::cout << " - " << line << std::endl;
 	}
-
-	return true;
-}
-
-//Checks whether or not a tramline exists in the specified database
-//returns true if it exists, false if not
-bool is_line_in_database(const tramway& database, const std::string& line)
-{
-	auto exists = false;
-
-	//loop through each stop in the database
-	for (const auto& stop : database)
-	{
-		//if the tramline is found even once, it exists
-		if (stop.second.find(line) != stop.second.end())
-		{
-			exists = true;
-			break;
-		}
-	}
-
-	return exists;
 }
 
 void print_distance_between_stops(const tramway& database,
 	const std::string& line, const std::string& stop1, const std::string& stop2)
 {
-	if (!is_line_in_database(database, line))
+	if (database.find(line) == database.end())
 	{
 		std::cout << UNKNOWN_LINE << std::endl;
 		return;
 	}
 
-	//if either of the stops is unknown, or either of the stops 
-	//aren't found on to the specified tramline
-	if (database.find(stop1) == database.end() ||
-		database.at(stop1).find(line) == database.at(stop1).end() ||
-		database.find(stop2) == database.end() ||
-		database.at(stop1).find(line) == database.at(stop1).end())
+	const auto& db_line = database.at(line);
+
+	//if either of the stops isn't found under the specified tramline
+	if (db_line.find(stop1) == db_line.end() ||
+		db_line.find(stop2) == db_line.end())
 	{
 		std::cout << UNKNOWN_STOP << std::endl;
 		return;
 	}
 
 	std::cout << "Distance between " << stop1 << " and " << stop2 << " is "
-		<< std::abs(database.at(stop1).at(line) - database.at(stop2).at(line))
+		<< std::abs(db_line.at(stop1) - db_line.at(stop2))
 		<< std::endl;
 }
 
 //Attempts to add a new tramline to the database
 void add_tramline(tramway& database, const std::string& line)
 {
-	if (is_line_in_database(database, line))
+	//if duplicate tramline
+	if (database.find(line) != database.end())
 	{
 		std::cout << DUPLICATE_STOP_LINE << std::endl;
 		return;
 	}
 
-	//tramlines with no stops are stored under the key ""
-	if (database.find("") == database.end())
-	{
-		database.insert(
-			{
-				"",
-				{ { line, 0.0 } }
-			});
-	}
-	else
-	{
-		database.at("").insert({ line, 0.0 });
-	}
+	database.insert(
+		{
+			line,
+			{ {  } }
+		});
 
 	std::cout << "Line was added." << std::endl;
 }
@@ -423,7 +425,8 @@ void add_tramline(tramway& database, const std::string& line)
 void add_stop_with_printouts(tramway& database, const std::string& line,
 	const std::string& stop_name, const std::string& distance)
 {
-	if (!is_line_in_database(database, line))
+	//if unknown line
+	if (database.find(line) == database.end())
 	{
 		std::cout << UNKNOWN_LINE << std::endl;
 		return;
@@ -442,15 +445,24 @@ void add_stop_with_printouts(tramway& database, const std::string& line,
 	std::cout << "Stop was added." << std::endl;
 }
 
+//Removes the specified stop from all lines in the specified database
 void remove_stop(tramway& database, const std::string& stop)
 {
-	if (database.find(stop) == database.end())
+	if (!is_stop_in_database(database, stop))
 	{
 		std::cout << UNKNOWN_STOP << std::endl;
 		return;
 	}
 
-	database.erase(stop);
+	for (auto& line : database)
+	{
+		//erase from each line it occurs in
+		if (line.second.find(stop) != line.second.end())
+		{
+			line.second.erase(stop);
+		}
+	}
+
 	std::cout << "Stop was removed from all lines." << std::endl;
 }
 
@@ -472,12 +484,14 @@ void rasse_user_interface(tramway& database)
 		}
 
 		//the command is the first element in the split inputs
-		//arguments are all the following elements
 		auto command = split_inputs.at(0);
 
 		//transform command to lowercase
 		std::transform(command.begin(), command.end(), command.begin(), tolower);
-		const std::vector<std::string> arguments(split_inputs.begin() + 1, split_inputs.end());
+
+		//arguments are all the elements after the first one
+		const std::vector<std::string> arguments(split_inputs.begin() + 1,
+			split_inputs.end());
 
 		if (command == "quit")
 		{
@@ -495,10 +509,7 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
-			if (!print_tramline(database, arguments.at(0)))
-			{
-				std::cout << UNKNOWN_LINE << std::endl;
-			}
+			print_tramline(database, arguments.at(0));
 		}
 		else if (command == "stops")
 		{
@@ -511,10 +522,7 @@ void rasse_user_interface(tramway& database)
 				std::cout << INVALID_COMMAND << std::endl;
 				continue;
 			}
-			if (!print_lines_in_stop(database, arguments.at(0)))
-			{
-				std::cout << UNKNOWN_STOP << std::endl;
-			}
+			print_lines_in_stop(database, arguments.at(0));
 		}
 		else if (command == "distance")
 		{
@@ -565,6 +573,7 @@ void rasse_user_interface(tramway& database)
 //entry point
 int main()
 {
+	//main database, holds all the info
 	tramway database;
 	print_rasse();
 	//attempt to fill the database byref
