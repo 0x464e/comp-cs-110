@@ -411,12 +411,8 @@ void add_tramline(tramway& database, const std::string& line)
 		return;
 	}
 
-	database.insert(
-		{
-			line,
-			{ {  } }
-		});
-
+	//insert new line with no stops
+	database.insert({ line, { } });
 	std::cout << "Line was added." << std::endl;
 }
 
