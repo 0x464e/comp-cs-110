@@ -9,7 +9,7 @@
  */
 int greatest_v1(int* itemptr, int size)
 {
-	auto greatest = 0;
+	auto greatest = *itemptr;
 	for (auto i = 0; i < size; i++)
 	{
 		const auto& value = *(itemptr + i);
