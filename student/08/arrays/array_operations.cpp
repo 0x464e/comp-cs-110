@@ -7,10 +7,10 @@
  * int size: number of elements to be examined
  * return value: the greatest element of the array
  */
-int greatest_v1(const int* itemptr, const int size)
+int greatest_v1(int* itemptr, int size)
 {
 	auto greatest = 0;
-	for(auto i = 0; i<size;i++)
+	for (auto i = 0; i < size; i++)
 	{
 		const auto& value = *(itemptr + i);
 		if (greatest < value)
@@ -19,15 +19,15 @@ int greatest_v1(const int* itemptr, const int size)
 	return greatest;
 }
 
-int greatest_v2(const int* itemptr, const int* endptr)
+int greatest_v2(int* itemptr, int* endptr)
 {
 	return greatest_v1(itemptr, endptr - itemptr);
 }
 
-void copy(const int* itemptr, const int* endptr, int* targetptr)
+void copy(int* itemptr, int* endptr, int* targetptr)
 {
 	for (auto i = 0; i < endptr - itemptr; i++)
-		*targetptr = *(itemptr + i);
+		*(targetptr + i) = *(itemptr + i);
 }
 
 void reverse(int* leftptr, int* rightptr)
