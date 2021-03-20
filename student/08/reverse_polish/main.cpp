@@ -48,8 +48,13 @@ int calculate(std::vector<std::string> &notation)
 	{
 		if (isOperation(str))
 		{
-			const auto n2 = numbers.top(); numbers.pop();
-			const auto n1 = numbers.top(); numbers.pop();
+			const auto n2 = numbers.top(); 
+			numbers.pop();
+			const auto n1 = numbers.top(); 
+			numbers.pop();
+
+			if (n2 == 0 && str == "/")
+				return 69696969;
 
 			numbers.push(calculate(n1, n2, str));
 		}
@@ -147,6 +152,12 @@ int main()
 	}
 
 	auto notation = parse(input);
-	std::cout << "Correct: " << calculate(notation) << " is the result" << endl;
+	const auto result = calculate(notation);
+	if(result == 69696969)
+	{
+		cout << "Error: Division by zero" << endl;
+		return EXIT_SUCCESS;
+	}
+	std::cout << "Correct: " << result << " is the result" << endl;
 	return EXIT_SUCCESS;
 }
