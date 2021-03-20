@@ -161,6 +161,7 @@ int main() {
 			for (const auto& student : user_ids)
 				file_object << student.second->student_number << ";"
 							<< student.second->user_id << ";"
+							<< student.second->name << ";"
 							<< student.second->phone_number << ";"
 							<< student.second->email << ";"
 							<< student.second->skype
