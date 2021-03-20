@@ -84,11 +84,6 @@ bool is_valid_phone_number(const std::string& number)
 	return true;
 }
 
-void change_number(std::map<std::string, Student*>& student_numbers, const std::string& new_number)
-{
-	
-}
-
 int main() {
 	std::string file_name;
 	std::cout << "Student file: ";
