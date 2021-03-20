@@ -156,7 +156,7 @@ int main()
 	if(result == 69696969)
 	{
 		cout << "Error: Division by zero" << endl;
-		return EXIT_SUCCESS;
+		return EXIT_FAILURE;
 	}
 	std::cout << "Correct: " << result << " is the result" << endl;
 	return EXIT_SUCCESS;
