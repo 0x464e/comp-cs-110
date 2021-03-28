@@ -75,6 +75,7 @@ void Queue::print()
 		return;
 	}
 
+	print_out += "Vehicle(s) ";
 	auto ptr = first_;
 	while(ptr)
 	{
@@ -82,7 +83,7 @@ void Queue::print()
 		ptr = ptr->next;
 	}
 
-	cout << print_out << "Vehicle(s) " << (is_green_ ? "can go on" : "waiting in traffic lights") << endl;
+	cout << print_out << (is_green_ ? "can go on" : "waiting in traffic lights") << endl;
 }
 
 Queue::~Queue()
