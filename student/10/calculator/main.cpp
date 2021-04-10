@@ -98,7 +98,7 @@ int main()
 			continue;
 
 		auto str_cmd = pieces.at(0);
-		transform(str_cmd.begin(), str_cmd.end(), str_cmd.begin(), toupper);
+		std::transform(str_cmd.begin(), str_cmd.end(), str_cmd.begin(), ::toupper);
 		Command cmd;
 
 		if (!get_command(str_cmd, cmd))
