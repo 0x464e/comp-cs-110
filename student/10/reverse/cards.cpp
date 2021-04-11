@@ -44,7 +44,8 @@ bool Cards::remove(int& id)
 
 void Cards::reverse()
 {
-	recursive_reverse(top_)->next = nullptr;
+	if(top_ != nullptr)
+		recursive_reverse(top_)->next = nullptr;
 }
 
 std::shared_ptr<Cards::Card_data> Cards::recursive_reverse(std::shared_ptr<Card_data> ptr)
