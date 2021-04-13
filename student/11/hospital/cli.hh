@@ -16,7 +16,7 @@
 #include <iostream>
 #include <vector>
 
-// Declares a type of function called.
+ // Declares a type of function called.
 using MemberFunc = void (Hospital::*)(const std::vector<std::string>& params);
 
 
@@ -44,7 +44,7 @@ public:
      * @param hospital pointer to the hospital obj the functions are called to
      * @param prompt that is printed before taking in user input
      */
-    Cli(Hospital* hospital, const std::string& prompt);
+    Cli(Hospital* hospital, std::string prompt);
 
     /**
      * @brief exec the cli
@@ -60,7 +60,7 @@ private:
      *
      * @note All iterators to the container are invalitaded
      */
-    void pop_front(std::vector<std::string>& vec);
+    static void pop_front(std::vector<std::string>& vec);
 
     /**
      * @brief find_command
@@ -84,7 +84,7 @@ private:
      * Print info of a single cmd.
      * if longer == true, print brief and params.
      */
-    void print_cmd_info(Cmd *cmd, bool longer = false) const;
+    static void print_cmd_info(Cmd *cmd, bool longer = false);
 
     /**
      * @brief read_from_file
@@ -98,7 +98,7 @@ private:
 
     Hospital* hospital_;
     std::string prompt_;
-    bool can_start;
+    bool can_start_;
 
     // Vector that stores all cmd info.
     // Exceptionally the lines below may exceed 80 characters,

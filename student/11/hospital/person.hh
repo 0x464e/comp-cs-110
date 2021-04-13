@@ -22,10 +22,10 @@ public:
     Person();
 
     // Constructor with an id.
-    Person(const std::string& id);
+    Person(std::string  id);
 
     // Constructor with an id and a date of birth (actually useless)
-    Person(const std::string& id, const std::string& date_of_birth);
+    Person(std::string  id, const std::string& date_of_birth);
 
     // Destructor.
     ~Person();
@@ -36,8 +36,8 @@ public:
 
     // Adds a medicine for the person.
     void add_medicine(const std::string& name,
-                      unsigned int strength,
-                      unsigned int dosage);
+        unsigned int strength,
+        unsigned int dosage);
 
     // Removes medicine from the person.
     void remove_medicine(const std::string& name);

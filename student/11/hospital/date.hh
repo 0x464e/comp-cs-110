@@ -25,7 +25,7 @@ public:
 
     // Constructor.
     // Assumes the parameter string to follow the format ddmmyyyy.
-    Date(const std::string& date_as_str);
+    explicit Date(const std::string& date_as_str);
 
     // Destructor.
     ~Date();
@@ -53,9 +53,9 @@ public:
 
 private:
     // Obvious attributes.
-    unsigned int day_;
-    unsigned int month_;
-    unsigned int year_;
+    unsigned int day_{};
+    unsigned int month_{};
+    unsigned int year_{};
 
     // Returns true if the year of the date is a leap year,
     // otherwise returns false.

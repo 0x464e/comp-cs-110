@@ -16,16 +16,16 @@
 #include "date.hh"
 #include <map>
 
-// Error and information outputs
+ // Error and information outputs
 const std::string ALREADY_EXISTS = "Error: Already exists: ";
 const std::string NOT_NUMERIC = "Error: Wrong type of parameters.";
 const std::string CANT_FIND = "Error: Can't find anything matching: ";
 const std::string STAFF_RECRUITED = "A new staff member has been recruited.";
 const std::string PATIENT_ENTERED = "A new patient has entered.";
 const std::string PATIENT_LEFT = "Patient left hospital, care period closed.";
-const std::string MEDICINE_ADDED= "Medicine added for: ";
-const std::string MEDICINE_REMOVED= "Medicine removed from: ";
-const std::string STAFF_ASSIGNED= "Staff assigned for: ";
+const std::string MEDICINE_ADDED = "Medicine added for: ";
+const std::string MEDICINE_REMOVED = "Medicine removed from: ";
+const std::string STAFF_ASSIGNED = "Staff assigned for: ";
 
 using Params = const std::vector<std::string>&;
 

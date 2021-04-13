@@ -1,19 +1,19 @@
 #include "person.hh"
 #include <iostream>
 #include <map>
+#include <utility>
 
 Person::Person()
-{
-}
+= default;
 
-Person::Person(const std::string &id):
-    id_(id)
+Person::Person(std::string id) :
+    id_(std::move(id))
 {
     date_of_birth_ = Date();
 }
 
-Person::Person(const std::string& id, const std::string& date_of_birth):
-    id_(id), date_of_birth_(date_of_birth)
+Person::Person(std::string  id, const std::string& date_of_birth) :
+    id_(std::move(id)), date_of_birth_(date_of_birth)
 {
 }
 
@@ -31,10 +31,7 @@ std::string Person::get_id() const
 std::vector<std::string> Person::get_medicines() const
 {
     std::vector<std::string> result;
-    for( std::map<std::string, Prescription>::const_iterator
-         iter = medicines_.begin();
-         iter != medicines_.end();
-         ++iter )
+    for (auto iter = medicines_.begin(); iter != medicines_.end(); ++iter)
     {
         result.push_back(iter->first);
     }
@@ -42,19 +39,19 @@ std::vector<std::string> Person::get_medicines() const
 }
 
 void Person::add_medicine(const std::string& name,
-                          unsigned int strength,
-                          unsigned int dosage)
+    const unsigned int strength,
+    const unsigned int dosage)
 {
-    Prescription pre;
+    Prescription pre{};
     pre.strength_ = strength;
     pre.dosage_ = dosage;
-    if( medicines_.find(name) != medicines_.end() )
+    if (medicines_.find(name) != medicines_.end())
     {
         medicines_.at(name) = pre;
     }
     else
     {
-        medicines_.insert({name, pre});
+        medicines_.insert({ name, pre });
     }
 }
 
@@ -72,21 +69,18 @@ void Person::print_id() const
 
 void Person::print_medicines(const std::string& pre_text) const
 {
-    if( medicines_.empty() )
+    if (medicines_.empty())
     {
         std::cout << " None" << std::endl;
         return;
     }
     std::cout << std::endl;
-    for( std::map<std::string, Prescription>::const_iterator
-         iter = medicines_.begin();
-         iter != medicines_.end();
-         ++iter )
+    for (auto iter = medicines_.begin(); iter != medicines_.end(); ++iter)
     {
         std::cout << pre_text
-                  << iter->first << " "
-                  << iter->second.strength_ << " mg x "
-                  << iter->second.dosage_ << std::endl;
+            << iter->first << " "
+            << iter->second.strength_ << " mg x "
+            << iter->second.dosage_ << std::endl;
     }
 }
 
@@ -94,4 +88,3 @@ bool Person::operator<(const Person &rhs) const
 {
     return id_ < rhs.id_;
 }
-

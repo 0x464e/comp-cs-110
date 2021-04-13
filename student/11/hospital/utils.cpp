@@ -1,51 +1,51 @@
 #include "utils.hh"
 
-std::vector<std::string> utils::split( std::string& str, char delim )
+std::vector<std::string> utils::split(std::string& str, const char delim)
 {
-    std::vector<std::string> result = {""};
-    bool cont = false;
-    for ( auto cha : str )
+    std::vector<std::string> result = { "" };
+    auto cont = false;
+    for (auto cha : str)
     {
-        if ( cha == '"' )
+        if (cha == '"')
         {
-            cont = not cont;
+            cont = !cont;
         }
-        else if ( cha == delim and not cont)
+        else if (cha == delim && !cont)
         {
-            result.push_back("");
+            result.emplace_back("");
         }
         else
         {
             result.back().push_back(cha);
         }
     }
-    if ( result.back() == "" )
+    if (result.back().empty())
     {
         result.erase(--result.end());
     }
     return result;
 }
 
-bool utils::is_numeric(std::string s, bool zero_allowed)
+bool utils::is_numeric(std::string s, const bool zero_allowed)
 {
-    if( not zero_allowed )
+    if (!zero_allowed)
     {
-        bool all_zeroes = true;
-        for( unsigned int i = 0; i < s.length(); ++i )
+        auto all_zeroes = true;
+        for (auto i : s)
         {
-            if( s.at(i) != '0' )
+            if (i != '0')
             {
                 all_zeroes = false;
             }
         }
-        if( all_zeroes )
+        if (all_zeroes)
         {
             return false;
         }
     }
-    for( unsigned int i = 0; i < s.length(); ++i )
+    for (auto i : s)
     {
-        if( not isdigit(s.at(i)) )
+        if (!isdigit(i))
         {
             return false;
         }
