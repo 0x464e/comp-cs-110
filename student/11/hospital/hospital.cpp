@@ -174,17 +174,7 @@ void Hospital::print_patient_info(Params params)
         return;
     }
 
-    //print info of each care period
-    for(const auto& careperiod : patients_careperiods_.at(id))
-    {
-        careperiod->print_careperiod_duration("* Care period: ");
-        careperiod->print_staff("  - Staff:");
-    }
-
-    std::cout << "* Medicines:";
-    //a patient must have at least one care period,
-    //person object can be retrieved from there
-    patients_careperiods_.at(id).at(0)->get_patient()->print_medicines("  - ");
+    print_patient_info(id);
 }
 
 /**
@@ -285,9 +275,26 @@ void Hospital::print_all_staff(Params)
     }
 }
 
+/**
+ * @brief Prints info about anyone who has ever been in the hospital
+ */
 void Hospital::print_all_patients(Params)
 {
+    if(patients_careperiods_.empty())
+    {
+        std::cout << "None" << std::endl;
+        return;
+    }
 
+    //loop through each patient in alphabetical order
+    for(const auto& patients_careperiods : patients_careperiods_)
+    {
+        //print the person's id
+        const auto& person_id = patients_careperiods.first;
+        std::cout << person_id << std::endl;
+        
+        print_patient_info(person_id);
+    }
 }
 
 void Hospital::print_current_patients(Params)
@@ -325,4 +332,24 @@ void Hospital::advance_date(Params params)
     std::cout << "New date is ";
     utils::today.print();
     std::cout << std::endl;
+}
+
+/**
+ * @brief Prints info about a patient\n
+ * Overloads the other print_patient_info() function that gets ran from the cli
+ * @param id String id of the patient
+ */
+void Hospital::print_patient_info(const std::string& id)
+{
+    //print info of each care period
+    for (const auto& careperiod : patients_careperiods_.at(id))
+    {
+        careperiod->print_careperiod_duration("* Care period: ");
+        careperiod->print_staff("  - Staff:");
+    }
+
+    std::cout << "* Medicines:";
+    //a patient must have at least one care period,
+    //person object can be retrieved from there
+    patients_careperiods_.at(id).at(0)->get_patient()->print_medicines("  - ");
 }

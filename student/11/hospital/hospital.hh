@@ -120,6 +120,8 @@ private:
 
     //Stores each careperiod in order, regardless of who the patient is
     std::vector<CarePeriod*> all_careperiods_;
+
+    void print_patient_info(const std::string& id);
 };
 
 #endif // HOSPITAL_HH
