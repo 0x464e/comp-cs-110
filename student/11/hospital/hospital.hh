@@ -13,7 +13,6 @@
 
 #include "person.hh"
 #include "careperiod.hh"
-#include "date.hh"
 #include <map>
 
 // Error and information outputs

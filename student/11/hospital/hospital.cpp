@@ -297,9 +297,25 @@ void Hospital::print_all_patients(Params)
     }
 }
 
+/**
+ * @brief Prints info about all patients who have an active care period
+ */
 void Hospital::print_current_patients(Params)
 {
+    if (current_patients_.empty())
+    {
+        std::cout << "None" << std::endl;
+        return;
+    }
 
+    //loop through each patient in alphabetical order
+    for (const auto& patient : current_patients_)
+    {
+        //print the patient's id
+        patient.second->print_id();
+        std::cout << std::endl;
+        print_patient_info(patient.second->get_id());
+    }
 }
 
 void Hospital::set_date(Params params)
