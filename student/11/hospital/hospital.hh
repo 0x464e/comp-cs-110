@@ -16,7 +16,7 @@
 #include "date.hh"
 #include <map>
 
- // Error and information outputs
+// Error and information outputs
 const std::string ALREADY_EXISTS = "Error: Already exists: ";
 const std::string NOT_NUMERIC = "Error: Wrong type of parameters.";
 const std::string CANT_FIND = "Error: Can't find anything matching: ";
@@ -108,11 +108,18 @@ public:
     void advance_date(Params params);
 
 private:
-    // Obvious container attributes.
+    //Stores all patients with an active care period
     std::map<std::string, Person*> current_patients_;
-    std::map<std::string, Person*> staff_;
 
-    // More attributes and methods
+    //Stores all staff in the hospital
+    std::map<std::string, Person*> staff_;
+    
+    //Stores each careperiod each person has ever had in order
+    //Key is the person's id
+    std::map<std::string, std::vector<CarePeriod*>> patients_careperiods_;
+
+    //Stores each careperiod in order, regardless of who the patient is
+    std::vector<CarePeriod*> all_careperiods_;
 };
 
 #endif // HOSPITAL_HH

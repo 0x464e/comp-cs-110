@@ -83,12 +83,12 @@ void Date::print() const
     std::cout << year_;
 }
 
-bool Date::operator==(const Date &rhs) const
+bool Date::operator==(const Date& rhs) const
 {
     return day_ == rhs.day_ && month_ == rhs.month_ && year_ == rhs.year_;
 }
 
-bool Date::operator<(const Date &rhs) const
+bool Date::operator<(const Date& rhs) const
 {
     return (year_ * 10000 + month_ * 100 + day_) <
         (rhs.year_ * 10000 + rhs.month_ * 100 + rhs.day_);

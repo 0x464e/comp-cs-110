@@ -1,5 +1,5 @@
 /* Class Date
- * ----------
+----------
  * COMP.CS.110 SPRING 2021
  * ----------
  * Class for describing a date.

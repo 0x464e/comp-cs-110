@@ -43,8 +43,8 @@ void Person::add_medicine(const std::string& name,
     const unsigned int dosage)
 {
     Prescription pre{};
-    pre.strength_ = strength;
-    pre.dosage_ = dosage;
+    pre.strength = strength;
+    pre.dosage = dosage;
     if (medicines_.find(name) != medicines_.end())
     {
         medicines_.at(name) = pre;
@@ -79,12 +79,12 @@ void Person::print_medicines(const std::string& pre_text) const
     {
         std::cout << pre_text
             << iter->first << " "
-            << iter->second.strength_ << " mg x "
-            << iter->second.dosage_ << std::endl;
+            << iter->second.strength << " mg x "
+            << iter->second.dosage << std::endl;
     }
 }
 
-bool Person::operator<(const Person &rhs) const
+bool Person::operator<(const Person& rhs) const
 {
     return id_ < rhs.id_;
 }

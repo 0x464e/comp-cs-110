@@ -30,6 +30,7 @@ bool Cli::exec()
     cmd = input.front();
     pop_front(input);
     const auto func = find_command(cmd);
+
     if (func == nullptr)
     {
         std::cout << UNKNOWN_CMD << std::endl;
@@ -70,12 +71,12 @@ bool Cli::exec()
     return true;
 }
 
-void Cli::pop_front(std::vector<std::string> &vec)
+void Cli::pop_front(std::vector<std::string>& vec)
 {
     vec.erase(vec.begin(), ++vec.begin());
 }
 
-Cmd *Cli::find_command(const std::string& cmd)
+Cmd* Cli::find_command(const std::string& cmd)
 {
     auto upper_cmd = cmd;
     for (unsigned int i = 0; i < cmd.size(); ++i)
@@ -133,7 +134,7 @@ void Cli::print_cmd_info(Cmd* cmd, const bool longer)
     }
 }
 
-bool Cli::read_from_file(const std::string &filename)
+bool Cli::read_from_file(const std::string& filename)
 {
     std::ifstream inputfile(filename);
     if (!inputfile)

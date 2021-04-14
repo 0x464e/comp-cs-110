@@ -16,23 +16,26 @@
 class CarePeriod
 {
 public:
-    // Constructor, start date given as a string (ddmmyyyy).
+    //Constructor, start date given as a string (ddmmyyyy).
     CarePeriod(const std::string& start, Person* patient);
 
-    // Constructor, start date given as a Date object.
+    //Constructor, start date given as a Date object.
     CarePeriod(const Date& start, Person* patient);
 
-    // Destructor.
+    //Destructor.
     ~CarePeriod();
 
-    // More public methods
+    //Returns this care period's patient
+    Person* get_patient() const;
+
+    //Ends this careperiod
+    void end_careperiod();
 
 private:
     Person* patient_;
     Date start_;
     Date end_;
 
-    // More attributes and methods
 };
 
 #endif // CAREPERIOD_HH
