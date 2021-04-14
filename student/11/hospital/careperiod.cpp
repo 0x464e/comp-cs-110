@@ -47,9 +47,9 @@ void CarePeriod::add_staff(const std::string& id)
  * @brief Prints this care period, optinally with some pre text
  * @param pre_text String to add in front of the printout
  */
-void CarePeriod::print_careperiod(const std::string& pre_text) const
+void CarePeriod::print_careperiod_duration(const std::string& pre_text) const
 {
-    std::cout << pre_text << "Care period: ";
+    std::cout << pre_text;
     start_.print();
     std::cout << " -";
 
@@ -68,7 +68,7 @@ void CarePeriod::print_careperiod(const std::string& pre_text) const
  */
 void CarePeriod::print_staff(const std::string& pre_text) const
 {
-    std::cout << pre_text << "Staff:";
+    std::cout << pre_text;
     if (staff_.empty())
     {
         std::cout << " None" << std::endl;
@@ -81,4 +81,13 @@ void CarePeriod::print_staff(const std::string& pre_text) const
     }
 
     std::cout << std::endl;
+}
+
+/**
+ * @brief Returns the staff members assigned to this care period
+ * @return String set of the staff members' ids
+ */
+std::set<std::string> CarePeriod::get_staff() const
+{
+    return staff_;
 }

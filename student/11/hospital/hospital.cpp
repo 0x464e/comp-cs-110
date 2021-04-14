@@ -47,12 +47,13 @@ void Hospital::enter(Params params)
     }
 
     Person* patient;
+    CarePeriod* careperiod;
 
     //if this person has never been in the hospital before
     if(patients_careperiods_.find(id) == patients_careperiods_.end())
     {
         patient = new Person(id);
-        const auto careperiod = new CarePeriod(Date(utils::today), patient);
+        careperiod = new CarePeriod(Date(utils::today), patient);
         //this person's very first careperiod
         patients_careperiods_.insert({ id, { careperiod } });
     }
@@ -61,11 +62,12 @@ void Hospital::enter(Params params)
         //if a person has been in the hospital before, they're guaranteed to
         //have at least one care period, from which we can get the person object
         patient = patients_careperiods_.at(id).at(0)->get_patient();
-        patients_careperiods_.at(id)
-            .push_back(new CarePeriod(Date(utils::today), patient));
+        careperiod = new CarePeriod(Date(utils::today), patient);
+        patients_careperiods_.at(id).push_back(careperiod);
     }
 
     current_patients_.insert({ id, patient });
+    all_careperiods_.push_back(careperiod);
     std::cout << PATIENT_ENTERED << std::endl;
 }
 
@@ -175,8 +177,8 @@ void Hospital::print_patient_info(Params params)
     //print info of each care period
     for(const auto& careperiod : patients_careperiods_.at(id))
     {
-        careperiod->print_careperiod("* ");
-        careperiod->print_staff("  - ");
+        careperiod->print_careperiod_duration("* Care period: ");
+        careperiod->print_staff("  - Staff:");
     }
 
     std::cout << "* Medicines:";
@@ -185,9 +187,36 @@ void Hospital::print_patient_info(Params params)
     patients_careperiods_.at(id).at(0)->get_patient()->print_medicines("  - ");
 }
 
+/**
+ * @brief Prints all care periods a specified staff member is assigned to
+ * @param params String vector containing one element, id of the staff member
+ */
 void Hospital::print_care_periods_per_staff(Params params)
 {
+    const auto& id = params.at(0);
 
+    //if patient by this id doesn't exist
+    if (staff_.find(id) == staff_.end())
+    {
+        std::cout << CANT_FIND << id << std::endl;
+        return;
+    }
+
+    for(const auto& careperiod : all_careperiods_)
+    {
+        const auto& staff = careperiod->get_staff();
+
+        //if staff member isnt assigned to this care period
+        if(staff.find(id) == staff.end())
+        {
+            continue;
+        }
+
+        careperiod->print_careperiod_duration();
+        std::cout << "* Patient: ";
+        careperiod->get_patient()->print_id();
+        std::cout << std::endl;
+    }
 }
 
 void Hospital::print_all_medicines(Params)
