@@ -219,9 +219,55 @@ void Hospital::print_care_periods_per_staff(Params params)
     }
 }
 
+/**
+ * @brief Prints out all current medicine prescriptions
+ */
 void Hospital::print_all_medicines(Params)
 {
+    //Stores each medicine by name, and each person by id who has an active
+    //prescription for this medicine.
+    //Map used to sort the medicine names alphabetically, and set used to
+    //automatically discard duplicates and sort alphabetically
+    std::map<std::string, std::set<std::string>> meds_by_name;
 
+    //each patient who has ever visited the hospital
+    for(const auto& patients_careperiods : patients_careperiods_)
+    {
+        //any patient must have at least one CarePeriod,
+        //get the Person object from it
+        const auto& patient = patients_careperiods.second.at(0)->get_patient();
+        //each medicine prescription the person has
+        for(const auto& med : patient->get_medicines())
+        {
+            //if this medicine isn't in the medicine map yet, add it in
+            if(meds_by_name.find(med) == meds_by_name.end())
+            {
+                meds_by_name.insert({ med, { patient->get_id() } });
+            }
+            else
+            {
+                meds_by_name.at(med).insert(patient->get_id());
+            }
+        }
+    }
+
+    if(meds_by_name.empty())
+    {
+        std::cout << "None" << std::endl;
+        return;
+    }
+
+    //for each medicine
+    for(const auto& med : meds_by_name)
+    {
+        std::cout << med.first << " prescribed for" << std::endl;
+
+        //for each person who has a prescription for this medicine
+        for(const auto& person_id : med.second)
+        {
+            std::cout << "* " << person_id << std::endl;
+        }
+    }
 }
 
 void Hospital::print_all_staff(Params)
