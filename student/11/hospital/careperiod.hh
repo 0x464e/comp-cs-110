@@ -32,7 +32,14 @@ public:
     //Ends this careperiod
     void end_careperiod();
 
+    //Adds a staff member to this care period
     void add_staff(const std::string& id);
+
+    //Prints this care period
+    void print_careperiod(const std::string& pre_text = "") const;
+
+    //Prints staff assigned to this care period
+    void print_staff(const std::string& pre_text = "") const;
 
 private:
     Person* patient_;

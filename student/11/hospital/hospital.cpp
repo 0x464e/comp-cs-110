@@ -157,9 +157,32 @@ void Hospital::remove_medicine(Params params)
     std::cout << MEDICINE_REMOVED << patient << std::endl;
 }
 
+/**
+ * @brief Prints info about a patient
+ * @param params String vector containing one element, id of the patient
+ */
 void Hospital::print_patient_info(Params params)
 {
-    
+    const auto& id = params.at(0);
+
+    //if patient by this id doesn't exist
+    if (patients_careperiods_.find(id) == patients_careperiods_.end())
+    {
+        std::cout << CANT_FIND << id << std::endl;
+        return;
+    }
+
+    //print info of each care period
+    for(const auto& careperiod : patients_careperiods_.at(id))
+    {
+        careperiod->print_careperiod("* ");
+        careperiod->print_staff("  - ");
+    }
+
+    std::cout << "* Medicines:";
+    //a patient must have at least one care period,
+    //person object can be retrieved from there
+    patients_careperiods_.at(id).at(0)->get_patient()->print_medicines("  - ");
 }
 
 void Hospital::print_care_periods_per_staff(Params params)
