@@ -12,6 +12,7 @@
 #include "person.hh"
 #include "date.hh"
 #include <string>
+#include <set>
 
 class CarePeriod
 {
@@ -31,10 +32,17 @@ public:
     //Ends this careperiod
     void end_careperiod();
 
+    void add_staff(const std::string& id);
+
 private:
     Person* patient_;
     Date start_;
     Date end_;
+
+    //staff members assigned to this care period
+    //set used due to duplicates being unwanted, and alphabetical order
+    //is needed in other commands
+    std::set<std::string> staff_;
 
 };
 

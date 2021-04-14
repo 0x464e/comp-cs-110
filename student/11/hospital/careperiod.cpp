@@ -33,3 +33,12 @@ void CarePeriod::end_careperiod()
 {
     end_ = utils::today;
 }
+
+/**
+ * @brief Adds a staff member to this care period
+ * @param id Id of the staff member to be added
+ */
+void CarePeriod::add_staff(const std::string& id)
+{
+    staff_.insert(id);
+}

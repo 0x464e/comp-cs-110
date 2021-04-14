@@ -33,7 +33,7 @@ void Hospital::recruit(Params params)
 /**
  * @brief Enters a new patient to the hospital system\n
  * and creates creates a careperiod for them
- * @param params String vector containing one element, id
+ * @param params String vector containing one element, id of the person to be added
  */
 void Hospital::enter(Params params)
 {
@@ -69,6 +69,10 @@ void Hospital::enter(Params params)
     std::cout << PATIENT_ENTERED << std::endl;
 }
 
+/**
+ * @brief Removes a patient from the hospital and closes their care period
+ * @param params String vector containing one element, id of the patient
+ */
 void Hospital::leave(Params params)
 {
     const auto& id = params.at(0);
@@ -88,9 +92,31 @@ void Hospital::leave(Params params)
     std::cout << PATIENT_LEFT << std::endl;
 }
 
+/**
+ * @brief Assigns a staff to work with the given patient's current care period
+ * @param params String vector containing two elements:
+ * - id of the staff member
+ * - id of the patient
+ */
 void Hospital::assign_staff(Params params)
 {
+    const auto& staff_id = params.at(0);
+    const auto& patient_id = params.at(1);
 
+    //if a staff or patient by specified id doesn't exist
+    if (staff_.find(staff_id) == staff_.end())
+    {
+        std::cout << CANT_FIND << staff_id << std::endl;
+        return;
+    }
+    if(current_patients_.find(patient_id) == current_patients_.end())
+    {
+        std::cout << CANT_FIND << patient_id << std::endl;
+        return;
+    }
+
+    //a patient's latest care period is always the current care period
+    patients_careperiods_.at(patient_id).back()->add_staff(staff_id);
 }
 
 void Hospital::add_medicine(Params params)
@@ -133,7 +159,7 @@ void Hospital::remove_medicine(Params params)
 
 void Hospital::print_patient_info(Params params)
 {
-
+    
 }
 
 void Hospital::print_care_periods_per_staff(Params params)
