@@ -1,3 +1,13 @@
+/*
+ * COMP.CS.110 K2021
+ *
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
+ */
+
 #include "hospital.hh"
 #include "utils.hh"
 #include <iostream>
@@ -6,15 +16,32 @@
 Hospital::Hospital()
 = default;
 
+/**
+ * @brief Destructor\n
+ * Deallocates the staff members, patients and care periods
+ */
 Hospital::~Hospital()
 {
-    // Deallocating staff
+    //deallocate staff
     for (auto iter = staff_.begin(); iter != staff_.end(); ++iter)
     {
         delete iter->second;
     }
 
-    // Remember to deallocate patients also
+    //deallocate patients and their care periods
+    //loop through each patients
+    for(const auto& patients_careperiods : patients_careperiods_)
+    {
+        //free the patient
+        const auto& patient = patients_careperiods.second.at(0)->get_patient();
+        delete patient;
+
+        //loop through each care period freeing them
+        for(const auto& careperiod : patients_careperiods.second)
+        {
+            delete careperiod;
+        }
+    }
 }
 
 void Hospital::recruit(Params params)
@@ -54,7 +81,7 @@ void Hospital::enter(Params params)
     {
         patient = new Person(id);
         careperiod = new CarePeriod(Date(utils::today), patient);
-        //this person's very first careperiod
+        //this person's very first care period
         patients_careperiods_.insert({ id, { careperiod } });
     }
     else
@@ -86,7 +113,7 @@ void Hospital::leave(Params params)
         return;
     }
 
-    //a patient can only have one active careperiod at the same, 
+    //a patient can only have one active care period at the same, 
     //and it'll be the latest one
     patients_careperiods_.at(id).back()->end_careperiod();
     current_patients_.erase(id);
@@ -196,7 +223,7 @@ void Hospital::print_care_periods_per_staff(Params params)
     {
         const auto& staff = careperiod->get_staff();
 
-        //if staff member isnt assigned to this care period
+        //if staff member isn't assigned to this care period
         if(staff.find(id) == staff.end())
         {
             continue;
@@ -223,7 +250,7 @@ void Hospital::print_all_medicines(Params)
     //each patient who has ever visited the hospital
     for(const auto& patients_careperiods : patients_careperiods_)
     {
-        //any patient must have at least one CarePeriod,
+        //any patient must have at least one care period,
         //get the Person object from it
         const auto& patient = patients_careperiods.second.at(0)->get_patient();
         //each medicine prescription the person has

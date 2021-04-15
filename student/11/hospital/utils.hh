@@ -5,6 +5,12 @@
  * Module for different utilities needed in the program.
  *
  * Note: Students shouldn't need to make changes to this module.
+ * 
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
  * */
 #ifndef UTILS_HH
 #define UTILS_HH

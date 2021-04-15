@@ -7,6 +7,12 @@
  * appropriate method based on user-given command through a function pointer.
  *
  * Note: Students shouldn't need to make changes to this class.
+ * 
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
  * */
 #ifndef CLI_HH
 #define CLI_HH

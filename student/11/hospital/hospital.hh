@@ -5,8 +5,11 @@
  * Class for describing a hospital. Only a single object created from this
  * class. Implements all commands in hospital program.
  *
- * Note: Students need change this class to implement commands missing
- * in the template code.
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
  * */
 #ifndef HOSPITAL_HH
 #define HOSPITAL_HH
@@ -59,7 +62,7 @@ public:
     // Adds the given medicine (name, strength, dosage) for the given patient.
     // If the given patient already has the medicine,
     // the prescription (strength, dosage) possibly changes.
-    // If the given patien already has the medicine with same prescription,
+    // If the given patient already has the medicine with same prescription,
     // nothing happens.
     void add_medicine(Params params);
 
@@ -68,7 +71,7 @@ public:
     void remove_medicine(Params params);
 
     // Prints the given patient's medicines.
-    //void print_patient_medicines(Params params); // ei käytössä
+    //void print_patient_medicines(Params params); // not used
 
     // Prints the given patient's all care periods and their current medicines,
     // i.e. those that have been added but not removed.
@@ -76,7 +79,7 @@ public:
 
     // Prints the patients of the given staff member, i.e. those patients whose
     // care periods the given staff member has worked in.
-    //void print_patients_per_staff(Params params); // ei käytössä
+    //void print_patients_per_staff(Params params); // not used
 
     // Prints the care periods of the given staff member, i.e. those
     // care periods the given staff member has worked in.
@@ -113,11 +116,11 @@ private:
     //Stores all staff in the hospital
     std::map<std::string, Person*> staff_;
     
-    //Stores each careperiod each person has ever had in order
+    //Stores each care period each person has ever had in order
     //Key is the person's id
     std::map<std::string, std::vector<CarePeriod*>> patients_careperiods_;
 
-    //Stores each careperiod in order, regardless of who the patient is
+    //Stores each care period in order, regardless of who the patient is
     std::vector<CarePeriod*> all_careperiods_;
 
     void print_patient_info(const std::string& id);

@@ -4,7 +4,11 @@
  * ----------
  * Class for describing a patient's care period in hospital.
  *
- * Note: Students need to implement almost all of this class by themselves.
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
  * */
 #ifndef CAREPERIOD_HH
 #define CAREPERIOD_HH

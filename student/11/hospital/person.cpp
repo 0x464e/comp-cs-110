@@ -1,3 +1,13 @@
+/*
+ * COMP.CS.110 K2021
+ *
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
+ */
+
 #include "person.hh"
 #include <iostream>
 #include <map>
@@ -18,10 +28,7 @@ Person::Person(std::string  id, const std::string& date_of_birth) :
 }
 
 Person::~Person()
-{
-    // Remove the print below before submitting the program in Plussa
-    std::cout << "Person " << id_ << " destructed." << std::endl;
-}
+= default;
 
 std::string Person::get_id() const
 {

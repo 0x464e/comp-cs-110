@@ -1,3 +1,13 @@
+/*
+ * COMP.CS.110 K2021
+ *
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
+ */
+
 #include "date.hh"
 #include "utils.hh"
 #include <iostream>

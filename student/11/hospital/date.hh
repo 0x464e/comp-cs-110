@@ -41,7 +41,7 @@ public:
     bool is_default() const;
 
     // Advances the date with given amount of days.
-    // Can't be anvanced by negative amounts.
+    // Can't be advanced by negative amounts.
     void advance(unsigned int days);
 
     // Prints the date (dd.mm.yyyy).

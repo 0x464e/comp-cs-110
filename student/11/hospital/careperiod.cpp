@@ -1,3 +1,13 @@
+/*
+ * COMP.CS.110 K2021
+ *
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
+ */
+
 #include "careperiod.hh"
 #include "utils.hh"
 #include <iostream>
@@ -14,7 +24,7 @@ CarePeriod::CarePeriod(const Date& start, Person* patient) :
 
 CarePeriod::~CarePeriod()
 {
-
+    patient_ = nullptr;
 }
 
 /**
@@ -27,7 +37,7 @@ Person* CarePeriod::get_patient() const
 }
 
 /**
- * @brief Ends this careperiod by setting today as the end date
+ * @brief Ends this care period by setting today as the end date
  */
 void CarePeriod::end_careperiod()
 {

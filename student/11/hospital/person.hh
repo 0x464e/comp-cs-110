@@ -6,6 +6,12 @@
  * in hospital.
  *
  * Note: Students can change this class, but most probably they need not.
+ * 
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
  * */
 #ifndef PERSON_HH
 #define PERSON_HH

@@ -1,3 +1,13 @@
+/*
+ * COMP.CS.110 K2021
+ *
+ * Program author
+ * Name: Otto 
+ * Student number: 
+ * UserID: 
+ * E-Mail: 
+ */
+
 #include "cli.hh"
 #include "utils.hh"
 #include <fstream>
