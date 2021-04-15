@@ -80,7 +80,7 @@ void Hospital::enter(Params params)
     if(patients_careperiods_.find(id) == patients_careperiods_.end())
     {
         patient = new Person(id);
-        careperiod = new CarePeriod(Date(utils::today), patient);
+        careperiod = new CarePeriod(utils::today, patient);
         //this person's very first care period
         patients_careperiods_.insert({ id, { careperiod } });
     }
@@ -89,7 +89,7 @@ void Hospital::enter(Params params)
         //if a person has been in the hospital before, they're guaranteed to
         //have at least one care period, from which we can get the person object
         patient = patients_careperiods_.at(id).at(0)->get_patient();
-        careperiod = new CarePeriod(Date(utils::today), patient);
+        careperiod = new CarePeriod(utils::today, patient);
         patients_careperiods_.at(id).push_back(careperiod);
     }
 
@@ -115,7 +115,7 @@ void Hospital::leave(Params params)
 
     //a patient can only have one active care period at the same, 
     //and it'll be the latest one
-    patients_careperiods_.at(id).back()->end_careperiod();
+    patients_careperiods_.at(id).back()->end_careperiod(utils::today);
     current_patients_.erase(id);
 
     std::cout << PATIENT_LEFT << std::endl;

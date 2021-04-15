@@ -26,11 +26,11 @@ Date::Date(const unsigned int day, const unsigned int month, const unsigned int 
     set(day, month, year);
 }
 
-Date::Date(const std::string& data_as_str)
+Date::Date(const std::string& date_as_str)
 {
-    const auto day = data_as_str.substr(0, 2);
-    const auto month = data_as_str.substr(2, 2);
-    const auto year = data_as_str.substr(4, 4);
+    const auto day = date_as_str.substr(0, 2);
+    const auto month = date_as_str.substr(2, 2);
+    const auto year = date_as_str.substr(4, 4);
     day_ = str_to_date_int(day);
     month_ = str_to_date_int(month);
     year_ = str_to_date_int(year);

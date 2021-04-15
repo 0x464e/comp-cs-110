@@ -38,10 +38,11 @@ Person* CarePeriod::get_patient() const
 
 /**
  * @brief Ends this care period by setting today as the end date
+ * @param end_date The end date
  */
-void CarePeriod::end_careperiod()
+void CarePeriod::end_careperiod(const Date& end_date)
 {
-    end_ = utils::today;
+    end_ = end_date;
 }
 
 /**

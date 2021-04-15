@@ -34,7 +34,7 @@ public:
     Person* get_patient() const;
 
     //Ends this careperiod
-    void end_careperiod();
+    void end_careperiod(const Date& end_date);
 
     //Adds a staff member to this care period
     void add_staff(const std::string& id);
