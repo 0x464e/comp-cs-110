@@ -146,6 +146,8 @@ void Hospital::assign_staff(Params params)
 
     //a patient's latest care period is always the current care period
     patients_careperiods_.at(patient_id).back()->add_staff(staff_id);
+
+    std::cout << STAFF_ASSIGNED << patient_id << std::endl;
 }
 
 void Hospital::add_medicine(Params params)
@@ -212,6 +214,9 @@ void Hospital::print_care_periods_per_staff(Params params)
 {
     const auto& id = params.at(0);
 
+    //a check for checking if this staff had no care periods
+    auto no_care_periods = true;
+
     //if patient by this id doesn't exist
     if (staff_.find(id) == staff_.end())
     {
@@ -229,10 +234,19 @@ void Hospital::print_care_periods_per_staff(Params params)
             continue;
         }
 
+        //there was at least one care period for this staff member
+        //set the check to false
+        no_care_periods = false;
+
         careperiod->print_careperiod_duration();
         std::cout << "* Patient: ";
         careperiod->get_patient()->print_id();
         std::cout << std::endl;
+    }
+
+    if(no_care_periods)
+    {
+        std::cout << "None" << std::endl;
     }
 }
 
