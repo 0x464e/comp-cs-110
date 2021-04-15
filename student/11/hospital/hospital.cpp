@@ -29,7 +29,7 @@ Hospital::~Hospital()
     }
 
     //deallocate patients and their care periods
-    //loop through each patients
+    //loop through each patient
     for(const auto& patients_careperiods : patients_careperiods_)
     {
         //free the patient
@@ -44,6 +44,10 @@ Hospital::~Hospital()
     }
 }
 
+/**
+ * @brief Adds a hospistal staff member
+ * @param params String vector containing one element, id of the staff to be added
+ */
 void Hospital::recruit(Params params)
 {
     const auto& specialist_id = params.at(0);
@@ -150,6 +154,14 @@ void Hospital::assign_staff(Params params)
     std::cout << STAFF_ASSIGNED << patient_id << std::endl;
 }
 
+/**
+ * @brief Adds a medicine prescription to a patient
+ * @param params String vector containing four elements:
+ * - Medicine name
+ * - Medicine strenght
+ * - Medicine dosage
+ * - Patient id
+ */
 void Hospital::add_medicine(Params params)
 {
     const auto& medicine = params.at(0);
@@ -173,6 +185,12 @@ void Hospital::add_medicine(Params params)
     std::cout << MEDICINE_ADDED << patient << std::endl;
 }
 
+/**
+ * @brief Removes a prescription from a patient
+ * @param params String vector containing two elements:
+ * - Medicine name
+ * - Patient id
+ */
 void Hospital::remove_medicine(Params params)
 {
     const auto& medicine = params.at(0);
@@ -301,6 +319,9 @@ void Hospital::print_all_medicines(Params)
     }
 }
 
+/**
+ * @brief Prints all staff members
+ */
 void Hospital::print_all_staff(Params)
 {
     if (staff_.empty())
@@ -359,6 +380,13 @@ void Hospital::print_current_patients(Params)
     }
 }
 
+/**
+ * @brief Sets a new date for the program
+ * @param params String vector containing three elements:
+ * - Day
+ * - Month
+ * - year
+ */
 void Hospital::set_date(Params params)
 {
     const auto& day = params.at(0);
@@ -377,6 +405,10 @@ void Hospital::set_date(Params params)
     std::cout << std::endl;
 }
 
+/**
+ * @brief Advanced the program's date
+ * @param params String vector containing one element, amount of days
+ */
 void Hospital::advance_date(Params params)
 {
     const auto& amount = params.at(0);

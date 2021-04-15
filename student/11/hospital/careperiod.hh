@@ -33,7 +33,7 @@ public:
     //Returns this care period's patient
     Person* get_patient() const;
 
-    //Ends this careperiod
+    //Ends this care period
     void end_careperiod(const Date& end_date);
 
     //Adds a staff member to this care period
@@ -57,7 +57,6 @@ private:
     //set used due to duplicates being unwanted, and alphabetical order
     //is needed in other commands
     std::set<std::string> staff_;
-
 };
 
 #endif // CAREPERIOD_HH

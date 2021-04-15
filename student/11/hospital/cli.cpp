@@ -14,7 +14,11 @@
 #include <sstream>
 #include <utility>
 
-
+/**
+ * @brief Constructor, initializes the hospital pointer, prompt, and start value
+ * @param hospital Pointer to a hospital
+ * @param prompt Commandline prompt
+ */
 Cli::Cli(Hospital* hospital, std::string prompt) :
     hospital_(hospital),
     prompt_(std::move(prompt)),
@@ -22,6 +26,10 @@ Cli::Cli(Hospital* hospital, std::string prompt) :
 {
 }
 
+/**
+ * @brief Executes the command line interpreter
+ * @return True if should continue executing, false if not
+ */
 bool Cli::exec()
 {
     if (!can_start_)
@@ -81,11 +89,20 @@ bool Cli::exec()
     return true;
 }
 
+/**
+ * @brief Removes the first element of a vector
+ * @param vec String vector to operate on
+ */
 void Cli::pop_front(std::vector<std::string>& vec)
 {
     vec.erase(vec.begin(), ++vec.begin());
 }
 
+/**
+ * @brief Tries to find a command from the input string
+ * @param cmd Command name
+ * @return Valid command pointer if one was found, nullptr if not
+ */
 Cmd* Cli::find_command(const std::string& cmd)
 {
     auto upper_cmd = cmd;
@@ -106,6 +123,10 @@ Cmd* Cli::find_command(const std::string& cmd)
     return nullptr;
 }
 
+/**
+ * @brief Prints help
+ * @param params Command(s) to print help for
+ */
 void Cli::print_help(const std::vector<std::string>& params)
 {
     if (!params.empty())
@@ -119,6 +140,11 @@ void Cli::print_help(const std::vector<std::string>& params)
     }
 }
 
+/**
+ * @brief Prints info about a command
+ * @param cmd The command
+ * @param longer True for extended info
+ */
 void Cli::print_cmd_info(Cmd* cmd, const bool longer)
 {
     std::cout << cmd->name << " : ";
@@ -144,6 +170,11 @@ void Cli::print_cmd_info(Cmd* cmd, const bool longer)
     }
 }
 
+/**
+ * @brief Tries to read and execute commands from a file
+ * @param filename File to read and execute from
+ * @return True for success, false for failure
+ */
 bool Cli::read_from_file(const std::string& filename)
 {
     std::ifstream inputfile(filename);

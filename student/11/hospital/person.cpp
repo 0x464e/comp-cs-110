@@ -13,28 +13,53 @@
 #include <map>
 #include <utility>
 
+/**
+ * @brief Default constructor
+ */
 Person::Person()
 = default;
 
+/**
+ * @brief Constructor overload, initalizes id with move semantics and date of
+ * birth with the default date
+ * @param id String id for the person
+ */
 Person::Person(std::string id) :
     id_(std::move(id))
 {
     date_of_birth_ = Date();
 }
 
-Person::Person(std::string  id, const std::string& date_of_birth) :
+/**
+ * @brief Constructor overload, initalizes id with move semantics and date of
+ * birth with the specified date
+ * @param id String id for the person
+ * @param date_of_birth String date of birth
+ */
+Person::Person(std::string id, const std::string& date_of_birth) :
     id_(std::move(id)), date_of_birth_(date_of_birth)
 {
 }
 
+/**
+ * @brief Default destructor
+ */
 Person::~Person()
 = default;
 
+/**
+ * @brief Gets this person's id
+ * @return String id
+ */
 std::string Person::get_id() const
 {
     return id_;
 }
 
+/**
+ * @brief Gets this person's medicines
+ * @return String vector containing the medicines
+ */
 std::vector<std::string> Person::get_medicines() const
 {
     std::vector<std::string> result;
@@ -45,6 +70,12 @@ std::vector<std::string> Person::get_medicines() const
     return result;
 }
 
+/**
+ * @brief Adds a medicine prescription for this person
+ * @param name Name of medicine
+ * @param strength Strength of medicine
+ * @param dosage Dosage for medicine
+ */
 void Person::add_medicine(const std::string& name,
     const unsigned int strength,
     const unsigned int dosage)
@@ -62,11 +93,18 @@ void Person::add_medicine(const std::string& name,
     }
 }
 
+/**
+ * @brief Removes a prescription for this person
+ * @param name String name of medicine
+ */
 void Person::remove_medicine(const std::string& name)
 {
     medicines_.erase(name);
 }
 
+/**
+ * @brief Prints this person's id
+ */
 void Person::print_id() const
 {
     std::cout << id_;
@@ -74,6 +112,10 @@ void Person::print_id() const
     //std::cout << std::endl;
 }
 
+/**
+ * @brief Prints this person's medicines
+ * @param pre_text Text in front of printouts
+ */
 void Person::print_medicines(const std::string& pre_text) const
 {
     if (medicines_.empty())
@@ -91,6 +133,11 @@ void Person::print_medicines(const std::string& pre_text) const
     }
 }
 
+/**
+ * @brief Overrides the less than operator
+ * @param rhs Person to compare with
+ * @return true if less, false if not
+ */
 bool Person::operator<(const Person& rhs) const
 {
     return id_ < rhs.id_;

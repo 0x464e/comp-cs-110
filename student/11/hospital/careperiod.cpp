@@ -12,18 +12,34 @@
 #include "utils.hh"
 #include <iostream>
 
+/**
+ * @brief Constructor, initializes the CarePeriod object
+ * @param start start date string
+ * @param patient patient as a Person object pointer
+ */
 CarePeriod::CarePeriod(const std::string& start, Person* patient) :
     patient_(patient), start_(start)
 {
 }
 
+/**
+ * @brief Constructor overload, initializes the CarePeriod object
+ * @param start start date as a Date object
+ * @param patient patient as a Person object pointer
+ */
 CarePeriod::CarePeriod(const Date& start, Person* patient) :
     patient_(patient), start_(start)
 {
 }
 
+/**
+ * @brief Destructor
+ */
 CarePeriod::~CarePeriod()
 {
+    //kind of useless since care periods, or persons, will never be removed
+    //during runtime in this program, but this is good practice and will trigger
+    //the destructor in the related Person object
     patient_ = nullptr;
 }
 
@@ -64,6 +80,7 @@ void CarePeriod::print_careperiod_duration(const std::string& pre_text) const
     start_.print();
     std::cout << " -";
 
+    //if the care period has an end date
     if (!end_.is_default())
     {
         std::cout << " ";

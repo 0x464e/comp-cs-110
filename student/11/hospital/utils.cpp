@@ -10,6 +10,13 @@
 
 #include "utils.hh"
 
+/**
+ * @brief Splits input by the specified delimiter.\n
+ * Quoted substrings are also returned as one part
+ * @param str String to split
+ * @param delim Delimiter character
+ * @return String vector of the split parts
+ */
 std::vector<std::string> utils::split(std::string& str, const char delim)
 {
     std::vector<std::string> result = { "" };
@@ -36,6 +43,12 @@ std::vector<std::string> utils::split(std::string& str, const char delim)
     return result;
 }
 
+/**
+ * @brief Checks if the input is numeric
+ * @param s String to check
+ * @param zero_allowed Bool value indicating if zeros are allowed
+ * @return True if numeric, false if not
+ */
 bool utils::is_numeric(std::string s, const bool zero_allowed)
 {
     if (!zero_allowed)
