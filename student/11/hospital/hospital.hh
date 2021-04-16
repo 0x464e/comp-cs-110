@@ -123,7 +123,10 @@ private:
     //Stores each care period in order, regardless of who the patient is
     std::vector<CarePeriod*> all_careperiods_;
 
+    //Private method to print info about a patient
     void print_patient_info(const std::string& id);
+
+    std::map<std::string, std::set<std::string>> get_all_medicines();
 };
 
 #endif // HOSPITAL_HH

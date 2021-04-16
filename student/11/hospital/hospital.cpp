@@ -277,28 +277,7 @@ void Hospital::print_all_medicines(Params)
     //prescription for this medicine.
     //Map used to sort the medicine names alphabetically, and set used to
     //automatically discard duplicates and sort alphabetically
-    std::map<std::string, std::set<std::string>> meds_by_name;
-
-    //each patient who has ever visited the hospital
-    for(const auto& patients_careperiods : patients_careperiods_)
-    {
-        //any patient must have at least one care period,
-        //get the Person object from it
-        const auto& patient = patients_careperiods.second.at(0)->get_patient();
-        //each medicine prescription the person has
-        for(const auto& med : patient->get_medicines())
-        {
-            //if this medicine isn't in the medicine map yet, add it in
-            if(meds_by_name.find(med) == meds_by_name.end())
-            {
-                meds_by_name.insert({ med, { patient->get_id() } });
-            }
-            else
-            {
-                meds_by_name.at(med).insert(patient->get_id());
-            }
-        }
-    }
+    const auto& meds_by_name = get_all_medicines();
 
     if(meds_by_name.empty())
     {
@@ -424,7 +403,7 @@ void Hospital::advance_date(Params params)
 }
 
 /**
- * @brief Prints info about a patient\n
+ * @brief Private method to print info about a patient\n
  * Overloads the other print_patient_info() function that gets ran from the cli
  * @param id String id of the patient
  */
@@ -441,4 +420,37 @@ void Hospital::print_patient_info(const std::string& id)
     //a patient must have at least one care period,
     //person object can be retrieved from there
     patients_careperiods_.at(id).at(0)->get_patient()->print_medicines("  - ");
+}
+
+/**
+ * @brief Private method to get and return all medicines, and patients who have
+ * prescriptions for them.
+ * @return map<string, set<string>> 
+ */
+std::map<std::string, std::set<std::string>> Hospital::get_all_medicines()
+{
+    std::map<std::string, std::set<std::string>> meds_by_name;
+
+    //each patient who has ever visited the hospital
+    for (const auto& patients_careperiods : patients_careperiods_)
+    {
+        //any patient must have at least one care period,
+        //get the Person object from it
+        const auto& patient = patients_careperiods.second.at(0)->get_patient();
+        //each medicine prescription the person has
+        for (const auto& med : patient->get_medicines())
+        {
+            //if this medicine isn't in the medicine map yet, add it in
+            if (meds_by_name.find(med) == meds_by_name.end())
+            {
+                meds_by_name.insert({ med, { patient->get_id() } });
+            }
+            else
+            {
+                meds_by_name.at(med).insert(patient->get_id());
+            }
+        }
+    }
+
+    return meds_by_name;
 }

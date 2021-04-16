@@ -49,7 +49,7 @@
 * Notes about the program and it's implementation:
 * Tried to make the data sturcture as non repetetive as possible.
 * This results in the design choice of not having e.g. a map where the key would
-* be a patient's id, and value would be pointer to the Person object.
+* be a patient's id, and value would be pointer to their Person object.
 * I decided not to waste memory on making an extra data structure like that, 
 * because the Person object can get retrieved from a care period, and a patient
 * will always have at least one care period.
