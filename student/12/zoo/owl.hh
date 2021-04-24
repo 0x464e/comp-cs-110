@@ -2,7 +2,7 @@
 #define CHICKEN_HH
 #include"bird.hh"
 
-class Owl: public Bird
+class Owl : public Bird
 {
 public:
     Owl();

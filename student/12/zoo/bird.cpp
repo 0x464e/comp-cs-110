@@ -1,9 +1,8 @@
 #include "bird.hh"
 
 
-Bird::Bird(): Animal("Flap flap")
+Bird::Bird(): Animal("Flap flap"), z_(0)
 {
-
 }
 
 void Bird::print_altitude(std::ostream &output) const
