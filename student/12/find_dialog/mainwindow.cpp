@@ -1,4 +1,4 @@
-#include "find_dialog.hh"
+#include "mainwindow.hh"
 #include <fstream>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -6,19 +6,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui.setupUi(this);
 }
-
 void MainWindow::on_findPushButton_clicked()
 {
-	
 	const auto match_case = ui.matchCheckBox->isChecked();
 
 	std::ifstream file_obj(file_name_);
-	if(!file_obj)
+	if (!file_obj)
 	{
 		ui.textBrowser->append(QString("File not found"));
 		return;
 	}
-	if(needle_.empty())
+	if (needle_.empty())
 	{
 		ui.textBrowser->append(QString("File found"));
 		return;
@@ -27,7 +25,7 @@ void MainWindow::on_findPushButton_clicked()
 	std::string line;
 	while (std::getline(file_obj, line))
 	{
-		if(match_case)
+		if (match_case)
 		{
 			if (line.find(needle_) != std::string::npos)
 			{
@@ -47,7 +45,7 @@ void MainWindow::on_findPushButton_clicked()
 				return;
 			}
 		}
-		
+
 	}
 
 	ui.textBrowser->append(QString("Word not found"));

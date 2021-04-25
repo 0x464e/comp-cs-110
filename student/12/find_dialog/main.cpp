@@ -1,4 +1,4 @@
-#include "find_dialog.hh"
+#include "mainwindow.hh"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])

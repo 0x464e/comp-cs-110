@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_find_dialog.h"
+#include "ui_mainwindow.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,7 +16,7 @@ private slots:
 	void on_keyLineEdit_editingFinished();
 
 private:
-    Ui::find_dialogClass ui;
+    Ui::MainWindowClass ui;
 	std::string file_name_;
 	std::string needle_;
 };

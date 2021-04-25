@@ -11,10 +11,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        find_dialog.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        find_dialog.hh
+        mainwindow.hh
 
 FORMS += \
-        find_dialog.ui
+        mainwindow.ui
+

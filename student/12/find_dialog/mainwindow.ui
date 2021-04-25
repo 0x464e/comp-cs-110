@@ -1,61 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>find_dialogClass</class>
- <widget class="QMainWindow" name="find_dialogClass">
+ <class>MainWindowClass</class>
+ <widget class="QMainWindow" name="MainWindowClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
-    <height>389</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>find_dialog</string>
+   <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTextBrowser" name="textBrowser">
+   <widget class="QPushButton" name="findPushButton">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>130</y>
-      <width>401</width>
-      <height>191</height>
+      <x>280</x>
+      <y>40</y>
+      <width>75</width>
+      <height>23</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
     </property>
    </widget>
    <widget class="QPushButton" name="closePushButton">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>60</y>
-      <width>131</width>
-      <height>21</height>
+      <x>290</x>
+      <y>80</y>
+      <width>75</width>
+      <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Close</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="findPushButton">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>30</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Find</string>
+     <string>PushButton</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="fileLineEdit">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>30</y>
-      <width>157</width>
+      <y>40</y>
+      <width>113</width>
       <height>20</height>
      </rect>
     </property>
@@ -64,8 +54,8 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>60</y>
-      <width>157</width>
+      <y>80</y>
+      <width>113</width>
       <height>20</height>
      </rect>
     </property>
@@ -73,14 +63,24 @@
    <widget class="QCheckBox" name="matchCheckBox">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>100</y>
-      <width>91</width>
-      <height>21</height>
+      <x>90</x>
+      <y>130</y>
+      <width>70</width>
+      <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Match Case</string>
+     <string>CheckBox</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>160</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -89,7 +89,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>525</width>
+     <width>600</width>
      <height>21</height>
     </rect>
    </property>
@@ -106,22 +106,22 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="find_dialog.qrc"/>
+  <include location="mainwindow.qrc"/>
  </resources>
  <connections>
   <connection>
    <sender>closePushButton</sender>
    <signal>clicked()</signal>
-   <receiver>find_dialogClass</receiver>
+   <receiver>MainWindowClass</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>285</x>
-     <y>103</y>
+     <x>329</x>
+     <y>121</y>
     </hint>
     <hint type="destinationlabel">
-     <x>262</x>
-     <y>194</y>
+     <x>419</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>
