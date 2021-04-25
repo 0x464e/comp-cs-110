@@ -13,12 +13,12 @@ void MainWindow::on_findPushButton_clicked()
 	std::ifstream file_obj(file_name_);
 	if (!file_obj)
 	{
-		ui.textBrowser->append(QString("File not found\r"));
+		ui.textBrowser->setText(QString("File not found"));
 		return;
 	}
 	if (needle_.empty())
 	{
-		ui.textBrowser->append(QString("File found\r"));
+		ui.textBrowser->setText(QString("File found"));
 		return;
 	}
 
@@ -29,7 +29,7 @@ void MainWindow::on_findPushButton_clicked()
 		{
 			if (line.find(needle_) != std::string::npos)
 			{
-				ui.textBrowser->append(QString("Word found\r"));
+				ui.textBrowser->setText(QString("Word found"));
 				return;
 			}
 		}
@@ -41,14 +41,14 @@ void MainWindow::on_findPushButton_clicked()
 
 			if (line.find(needle) != std::string::npos)
 			{
-				ui.textBrowser->append(QString("Word found\r"));
+				ui.textBrowser->setText(QString("Word found"));
 				return;
 			}
 		}
 
 	}
 
-	ui.textBrowser->append(QString("Word not found\r"));
+	ui.textBrowser->setText(QString("Word not found"));
 }
 
 void MainWindow::on_fileLineEdit_editingFinished()
