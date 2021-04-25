@@ -3,12 +3,12 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_find_dialog.h"
 
-class find_dialog : public QMainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    find_dialog(QWidget *parent = Q_NULLPTR);
+    MainWindow(QWidget *parent = Q_NULLPTR);
 
 private slots:
 	void on_findPushButton_clicked();

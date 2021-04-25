@@ -1,13 +1,13 @@
 #include "find_dialog.hh"
 #include <fstream>
 
-find_dialog::find_dialog(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
 }
 
-void find_dialog::on_findPushButton_clicked()
+void MainWindow::on_findPushButton_clicked()
 {
 	
 	const auto match_case = ui.matchCheckBox->isChecked();
@@ -53,12 +53,12 @@ void find_dialog::on_findPushButton_clicked()
 	ui.textBrowser->append(QString("Word not found"));
 }
 
-void find_dialog::on_fileLineEdit_editingFinished()
+void MainWindow::on_fileLineEdit_editingFinished()
 {
 	file_name_ = ui.fileLineEdit->text().toStdString();
 }
 
-void find_dialog::on_keyLineEdit_editingFinished()
+void MainWindow::on_keyLineEdit_editingFinished()
 {
 	needle_ = ui.keyLineEdit->text().toStdString();
 }

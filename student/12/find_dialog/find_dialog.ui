@@ -75,7 +75,7 @@
      <rect>
       <x>100</x>
       <y>100</y>
-      <width>101</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -90,7 +90,7 @@
      <x>0</x>
      <y>0</y>
      <width>525</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -105,7 +105,9 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="find_dialog.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>closePushButton</sender>
